@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ cfg.site_name }}{% endblock %}
+{% block body %}
+<main class="legal">
+  <div class="wrap narrow">
+    <p class="eyebrow">Last updated {{ updated }}</p>
+    <h1 class="page-h1 left">{{ title }}</h1>
+    <p class="draft">Draft for launch. Have it reviewed before taking payments.</p>
+    {% if kind == 'terms' %}
+    <h3>1. The service</h3><p>{{ cfg.site_name }} edits videos you upload into short vertical reels in the style you choose.</p>
+    <h3>2. Your content</h3><p>You confirm you own the video or have permission to have it edited, including the rights of anyone who appears in it. You keep all rights to your video and the finished reel.</p>
+    <h3>3. What we add</h3><p>We add stock footage, music, sound effects and graphics licensed for this use. Brand logos and website screens are shown only to illustrate tools you mention and do not imply endorsement.</p>
+    <h3>4. Content we refuse</h3><p>We may refuse videos that are illegal, hateful, sexual, misleading, or that infringe someone else's rights. Refused orders are refunded.</p>
+    <h3>5. Delivery and revisions</h3><p>Delivery times are targets, not guarantees. Revisions cover changes to the edit, not a new video.</p>
+    <h3>6. Payments and refunds</h3><p>Prices are shown on the pricing page. If we can't deliver a usable reel, you get a full refund for that reel.</p>
+    <h3>7. Liability</h3><p>Our liability is limited to the amount you paid for the affected order.</p>
+    {% else %}
+    <h3>What we collect</h3><p>Your name, email, the video you upload and any details you add to your order.</p>
+    <h3>How we use it</h3><p>Only to edit and deliver your reel and to contact you about your order. We don't sell your data or use your video in our marketing without written permission.</p>
+    <h3>How long we keep it</h3><p>Uploaded videos and finished reels are deleted 30 days after delivery. Order records (name, email, order details) are kept for accounting.</p>
+    <h3>Who processes it</h3><p>Our hosting, storage, email and payment providers, only as needed to run the service.</p>
+    <h3>Your rights</h3><p>Ask us to access, correct or delete your data at any time using the contact on this site.</p>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

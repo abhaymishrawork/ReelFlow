@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ cfg.site_name }} · Premium edited reels{% endblock %}</title>
+<meta name="description" content="Upload a raw talking video. Get back a professionally edited reel with motion graphics, real B-roll and captions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="{{ url_for('home') }}"><span class="mark"></span>{{ cfg.site_name }}</a>
+    <nav class="links">
+      <a href="{{ url_for('home') }}#styles">Styles</a>
+      <a href="{{ url_for('how') }}">How it works</a>
+      <a href="{{ url_for('pricing') }}">Pricing</a>
+      <a href="{{ url_for('home') }}#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-dark btn-sm" href="{{ url_for('home') }}#start">Get my reel</a>
+  </div>
+</header>
+{% block body %}{% endblock %}
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span class="brand small"><span class="mark"></span>{{ cfg.site_name }}</span>
+    <span>Uploads are private and deleted 30 days after delivery.</span>
+    <span class="foot-links"><a href="{{ url_for('pricing') }}">Pricing</a><a href="{{ url_for('how') }}">How it works</a>
+      <a href="{{ url_for('terms') }}">Terms</a><a href="{{ url_for('privacy') }}">Privacy</a>
+      <a href="mailto:{{ cfg.contact_email }}">Contact</a></span>
+  </div>
+</footer>
+</body>
+</html>

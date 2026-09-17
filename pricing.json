@@ -1,0 +1,54 @@
+{
+  "currency": "$",
+  "note": "Launch prices — suggestions, user to confirm.",
+  "plans": [
+    {
+      "id": "basic",
+      "name": "Basic",
+      "tier": "captions",
+      "price": "7",
+      "per": "per reel",
+      "for": "Clean, on-brand captions — fast",
+      "features": [
+        "Access to every caption template",
+        "Retakes and pauses removed",
+        "1 free revision",
+        "Delivered in 48 hours"
+      ],
+      "cta": "Start with Basic",
+      "featured": false
+    },
+    {
+      "id": "creator",
+      "name": "Creator",
+      "tier": "full",
+      "price": "19",
+      "per": "per reel",
+      "for": "The full production, every time",
+      "features": [
+        "Everything in Basic",
+        "Real B-roll and scene transitions",
+        "Professional motion-graphic templates",
+        "Every filler word and retake removed",
+        "2 revisions",
+        "Delivered in 24 hours"
+      ],
+      "cta": "Start with Creator",
+      "featured": true
+    },
+    {
+      "id": "custom",
+      "name": "Custom",
+      "tier": "full",
+      "for": "Hands-on, finished by a human",
+      "features": [
+        "Everything in Creator",
+        "A human editor reviews and finishes your reel personally",
+        "Unlimited corrections until it's right, no extra charge"
+      ],
+      "cta": "Talk to us",
+      "contact": true,
+      "featured": false
+    }
+  ]
+}

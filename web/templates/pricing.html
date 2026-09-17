@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Pricing · {{ cfg.site_name }}{% endblock %}
+{% block body %}
+<main>
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Pricing</p>
+    <h1 class="page-h1">Three ways to work with us.</h1>
+    <p class="sub">Start with captions, move up to a full production, or hand it to a human entirely.
+      Every tier includes everything below it.</p>
+  </div>
+</section>
+
+<section class="plans-sec">
+  <div class="wrap plans">
+    {% for p in pricing.plans %}
+    <article class="plan {% if p.featured %}featured{% endif %}{% if p.contact %} contact{% endif %}">
+      {% if p.featured %}<span class="ribbon">Most popular</span>{% endif %}
+      <h3>{{ p.name }}</h3>
+      <p class="plan-for">{{ p.for }}</p>
+      {% if p.contact %}
+      <p class="price price-contact">Let's talk</p>
+      <a class="btn btn-dark btn-lg" href="mailto:{{ cfg.contact_email }}?subject=ReelFlow%20{{ p.name | urlencode }}%20plan">{{ p.cta }}</a>
+      {% else %}
+      <p class="price"><span class="cur">{{ pricing.currency }}</span>{{ p.price }}<span class="per">/ {{ p.per }}</span></p>
+      <a class="btn {% if p.featured %}btn-gold{% else %}btn-dark{% endif %} btn-lg" href="{{ url_for('home', plan=p.id, tier=p.tier) }}#start">{{ p.cta }}</a>
+      {% endif %}
+      <ul class="feat">{% for f in p.features %}<li>{{ f }}</li>{% endfor %}</ul>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="plans-note">{{ pricing.note }}</p>
+</section>
+
+<section class="faq">
+  <div class="wrap narrow">
+    <h2>Pricing questions</h2>
+    <details><summary>What counts as one reel?</summary><p>One raw video up to 5 minutes, edited into one vertical reel.</p></details>
+    <details><summary>What is a revision?</summary><p>A round of changes after delivery, like swapping a B-roll clip, changing a headline or trimming a section.</p></details>
+    <details><summary>What makes Custom different?</summary><p>A human — the person behind ReelFlow — personally reviews and finishes your reel, and keeps correcting it with you until it's right, at no extra charge.</p></details>
+    <details><summary>Can I move between tiers later?</summary><p>Yes. Order Basic for one reel and Creator for the next — there's no lock-in or subscription to cancel.</p></details>
+  </div>
+</section>
+</main>
+{% endblock %}

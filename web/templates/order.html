@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block body %}
+<main class="status">
+  <div class="wrap narrow">
+  {% if not o %}
+    <p class="eyebrow">404</p>
+    <h1 class="st-title">Order not found</h1>
+    <p class="sub">Check the link, or <a href="{{ url_for('home') }}">start a new order</a>.</p>
+  {% else %}
+    {% if is_new %}<p class="notice">✓ Order placed. <b>Bookmark this page.</b> Your download appears here when it's ready.</p>{% endif %}
+    <p class="eyebrow">Order {{ o.id }}</p>
+    <h1 class="st-title">{{ label }}{% if o.status == 'editing' %}<span class="dots"><i></i><i></i><i></i></span>{% endif %}</h1>
+    <p class="sub">{{ text }}</p>
+    {% if link %}<a class="btn btn-gold btn-lg" href="{{ link }}">Download your reel</a>{% endif %}
+    <ol class="track">
+      {% set order_ = ['new', 'editing', 'done'] %}
+      {% set cur = order_.index(o.status) if o.status in order_ else -1 %}
+      {% for s in order_ %}
+      <li class="{% if loop.index0 < cur %}past{% elif loop.index0 == cur %}on{% endif %}">
+        <span>{{ loop.index }}</span>{{ {'new': 'Received', 'editing': 'Editing', 'done': 'Ready'}[s] }}</li>
+      {% endfor %}
+    </ol>
+    <dl class="facts">
+      <dt>Tier</dt><dd>{{ 'Captions only' if o.get('tier') == 'captions' else 'Full edit' }}</dd>
+      <dt>Style</dt><dd>{{ style.name if style else o.style }}</dd>
+      <dt>Video</dt><dd>{{ o.video.original_name }}</dd>
+      <dt>Placed</dt><dd>{{ o.created }}</dd>
+    </dl>
+    {% if o.status in ['new', 'editing'] %}<script>setTimeout(() => location.replace(location.pathname), 60000)</script>{% endif %}
+  {% endif %}
+  </div>
+</main>
+{% endblock %}

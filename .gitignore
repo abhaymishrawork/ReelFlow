@@ -1,0 +1,21 @@
+# Customer data — never public
+orders/
+projects/
+
+# Source reference clips (private, not the compressed public previews)
+references/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local secrets (should never exist here, but just in case)
+.env
+.env.*
+*.key

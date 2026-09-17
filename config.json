@@ -1,0 +1,34 @@
+{
+  "site_name": "ReelFlow",
+  "tagline": "Upload your raw talking video. Get a premium edited reel.",
+  "contact_email": "abhayworkofficial@gmail.com",
+  "host": "127.0.0.1",
+  "port": 8765,
+  "public_url": "http://localhost:8765",
+  "max_upload_mb": 2000,
+  "min_video_seconds": 10,
+  "max_video_minutes": 5,
+  "allowed_ext": [".mp4", ".mov", ".m4v", ".mkv", ".webm"],
+
+  "queue":   { "provider": "local", "dir": "orders" },
+  "storage": { "provider": "local", "dir": "orders",
+               "r2": { "endpoint": "env:R2_ENDPOINT", "bucket": "env:R2_BUCKET",
+                       "access_key": "env:R2_ACCESS_KEY", "secret_key": "env:R2_SECRET_KEY" } },
+
+  "notify": {
+    "providers": ["desktop", "log"],
+    "ntfy_topic": "env:REELFLOW_NTFY_TOPIC",
+    "telegram_bot_token": "env:REELFLOW_TELEGRAM_TOKEN",
+    "telegram_chat_id": "env:REELFLOW_TELEGRAM_CHAT",
+    "smtp": { "host": "smtp.gmail.com", "port": 587, "user": "env:REELFLOW_SMTP_USER",
+              "password": "env:REELFLOW_SMTP_PASSWORD", "from": "env:REELFLOW_SMTP_USER" },
+    "email_customer_on_delivery": false
+  },
+
+  "editor": {
+    "provider": "claude",
+    "projects_dir": "projects",
+    "skill": "premium-motion-graphics-editor",
+    "renderer": "C:/Users/Intel/.claude/skills/premium-motion-graphics-editor/scripts/render.py"
+  }
+}

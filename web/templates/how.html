@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}How it works · {{ cfg.site_name }}{% endblock %}
+{% block body %}
+<main>
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h1 class="page-h1">You talk. <em>We turn it into a reel people finish.</em></h1>
+    <p class="sub">No editing app, no timeline, no transcript to fix. Here is exactly what happens to your video.</p>
+  </div>
+</section>
+
+<section class="timeline">
+  <div class="wrap narrow">
+    <div class="tl"><span class="n">01</span><div><h3>You upload a raw video</h3>
+      <p>Record on your phone, talking to camera. Mistakes, restarts and long pauses are fine. Pick a style, add details only if you want to.</p></div></div>
+    <div class="tl"><span class="n">02</span><div><h3>We understand your message</h3>
+      <p>We transcribe your video and work out who it is for, what problem you are solving and what viewers should do next. This decides every visual choice.</p></div></div>
+    <div class="tl"><span class="n">03</span><div><h3>We cut it tight</h3>
+      <p>The best take of every line is kept. Retakes, filler and dead air go, so the reel moves fast without sounding chopped.</p></div></div>
+    <div class="tl"><span class="n">04</span><div><h3>We design the visuals</h3>
+      <p>Motion graphics explain your points, real logos and website screens appear when you mention a tool, and B-roll matches your audience.</p></div></div>
+    <div class="tl"><span class="n">05</span><div><h3>We finish the sound and picture</h3>
+      <p>Captions in your chosen style, headline moments, music under your voice, sound design and a colour grade.</p></div></div>
+    <div class="tl"><span class="n">06</span><div><h3>You download and post</h3>
+      <p>Your order page turns to Ready with a 1080×1920 download. Want a change? Ask for a revision.</p></div></div>
+  </div>
+</section>
+
+<section class="good-bad">
+  <div class="wrap narrow">
+    <h2>Videos that work best</h2>
+    <div class="gb">
+      <div class="gb-col ok-col"><h4>Great fit</h4><ul><li>Advice, tips and lessons</li><li>Explaining your product or service</li><li>Stories and case studies</li><li>One person talking to camera</li></ul></div>
+      <div class="gb-col no-col"><h4>Not a fit (yet)</h4><ul><li>Vlogs with no talking</li><li>Long podcasts over 5 minutes</li><li>Music videos</li><li>Videos you don't have the rights to</li></ul></div>
+    </div>
+    <div class="center"><a class="btn btn-gold btn-lg" href="{{ url_for('home') }}#start">Upload your video</a></div>
+  </div>
+</section>
+</main>
+{% endblock %}

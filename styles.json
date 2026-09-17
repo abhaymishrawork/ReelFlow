@@ -1,0 +1,409 @@
+{
+  "categories": [
+    {
+      "id": "business",
+      "label": "Business"
+    },
+    {
+      "id": "creators",
+      "label": "Creators"
+    },
+    {
+      "id": "coaches",
+      "label": "Coaches"
+    },
+    {
+      "id": "desi",
+      "label": "Desi / Hinglish"
+    }
+  ],
+  "tiers": [
+    {
+      "id": "full",
+      "label": "Full Edit",
+      "short": "Captions + B-roll + motion graphics",
+      "tagline": "We remove retakes, cut in real B-roll and tool screens, add motion graphics behind you, and design the captions on top.",
+      "revision_note": "B-roll and motion graphic choices are creative calls, so a full edit gets 1-2 revision rounds depending on plan.",
+      "price_from": "19"
+    },
+    {
+      "id": "captions",
+      "label": "Captions Only",
+      "short": "Just premium captions",
+      "tagline": "Retakes and pauses removed, premium designed captions on your raw footage. No B-roll, no motion graphics.",
+      "revision_note": "Captions are placement and wording, not creative judgement calls, so there's less to go back and forth on.",
+      "price_from": "7"
+    }
+  ],
+  "before_after": {
+    "before": "previews/before-gold.mp4",
+    "before_poster": "previews/before-gold.jpg",
+    "after": "previews/gold.mp4",
+    "after_poster": "previews/gold.jpg",
+    "after_label": "Gold Premium"
+  },
+  "styles": [
+    {
+      "id": "gold",
+      "name": "Gold Premium",
+      "tier": "full",
+      "categories": [
+        "business",
+        "coaches"
+      ],
+      "tagline": "Luxury gold captions, headlines behind you, cinematic warm grade.",
+      "best_for": "Founders, consultants, high-ticket services",
+      "includes": [
+        "Motion graphics",
+        "Real B-roll",
+        "Tool screens",
+        "Sound design"
+      ],
+      "preview": "previews/gold.mp4",
+      "poster": "previews/gold.jpg",
+      "show_preview": true,
+      "engine_style": "gold",
+      "reference": null
+    },
+    {
+      "id": "bold",
+      "name": "Bold Pop",
+      "tier": "full",
+      "categories": [
+        "creators",
+        "coaches"
+      ],
+      "tagline": "Punchy yellow key words, clean white headlines, bright modern look.",
+      "best_for": "Creators, educators, tech and SaaS tips",
+      "includes": [
+        "Motion graphics",
+        "Real B-roll",
+        "Tool screens",
+        "Sound design"
+      ],
+      "preview": "previews/bold.mp4",
+      "poster": "previews/bold.jpg",
+      "show_preview": true,
+      "engine_style": "bold",
+      "reference": null
+    },
+    {
+      "id": "highlight",
+      "name": "Green Highlight",
+      "tier": "full",
+      "categories": [
+        "creators",
+        "desi"
+      ],
+      "tagline": "Bold key word on a lime highlight box, crisp white headlines.",
+      "best_for": "Tips, hot takes, Hinglish creators",
+      "includes": [
+        "Motion graphics",
+        "Real B-roll",
+        "Tool screens",
+        "Sound design"
+      ],
+      "preview": "previews/highlight.mp4",
+      "poster": "previews/highlight.jpg",
+      "show_preview": true,
+      "engine_style": "highlight",
+      "reference": null
+    },
+    {
+      "id": "editorial",
+      "name": "Editorial Serif",
+      "tier": "full",
+      "categories": [
+        "business",
+        "coaches"
+      ],
+      "tagline": "Elegant italic serif words, soft film grade, magazine feel.",
+      "best_for": "Coaches, experts, personal brands",
+      "includes": [
+        "Motion graphics",
+        "Real B-roll",
+        "Tool screens",
+        "Sound design"
+      ],
+      "preview": "previews/editorial.mp4",
+      "poster": "previews/editorial.jpg",
+      "show_preview": true,
+      "engine_style": "editorial",
+      "reference": null
+    },
+    {
+      "id": "swiss-clean",
+      "name": "Swiss Clean",
+      "tier": "full",
+      "categories": [
+        "business",
+        "creators"
+      ],
+      "tagline": "Minimal black-on-white key words, tight grid captions, no noise.",
+      "best_for": "Consultants, SaaS founders, clean personal brands",
+      "includes": [
+        "Motion graphics",
+        "Real B-roll",
+        "Tool screens",
+        "Sound design"
+      ],
+      "preview": "previews/swiss-clean.mp4",
+      "poster": "previews/swiss-clean.jpg",
+      "show_preview": true,
+      "engine_style": "swiss-clean",
+      "reference": "references/captions/swiss-1cd8e8fdebb0.mp4"
+    },
+    {
+      "id": "neon-nights",
+      "name": "Neon Nights",
+      "tier": "full",
+      "categories": [
+        "creators",
+        "desi"
+      ],
+      "tagline": "Glowing neon key words on a dark grade, high-energy pacing.",
+      "best_for": "Nightlife, fitness, Gen-Z creators",
+      "includes": [
+        "Motion graphics",
+        "Real B-roll",
+        "Tool screens",
+        "Sound design"
+      ],
+      "preview": "previews/neon-nights.mp4",
+      "poster": "previews/neon-nights.jpg",
+      "show_preview": true,
+      "engine_style": "neon-nights",
+      "reference": "references/captions/ghostline-d59040b41b8a.mp4"
+    }
+  ],
+  "caption_styles": [
+    {
+      "id": "agent-story",
+      "name": "Agent Story",
+      "tier": "captions",
+      "categories": [
+        "business",
+        "creators"
+      ],
+      "tagline": "Narrative caption reveal built for voiceover storytelling.",
+      "best_for": "Story-driven talking heads, case studies",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/agent-story.mp4",
+      "poster": "previews/agent-story.jpg",
+      "engine_style": "agent-story",
+      "reference": "references/captions/agent-story-3df3c7198220.mp4"
+    },
+    {
+      "id": "aura",
+      "name": "Aura",
+      "tier": "captions",
+      "categories": [
+        "coaches",
+        "creators"
+      ],
+      "tagline": "Soft glow key words with a calm, premium rhythm.",
+      "best_for": "Coaches, wellness and personal-brand creators",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/aura.mp4",
+      "poster": "previews/aura.jpg",
+      "engine_style": "aura",
+      "reference": "references/captions/aura-d5ea66c7df9a.mp4"
+    },
+    {
+      "id": "chalk",
+      "name": "Chalk",
+      "tier": "captions",
+      "categories": [
+        "business",
+        "coaches"
+      ],
+      "tagline": "Hand-drawn chalk-style captions with a lecture feel.",
+      "best_for": "Educators, explainers, how-to creators",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/chalk.mp4",
+      "poster": "previews/chalk.jpg",
+      "engine_style": "chalk",
+      "reference": "references/captions/chalk-a4cb3c2bdea4.mp4"
+    },
+    {
+      "id": "dyn-linen",
+      "name": "Linen",
+      "tier": "captions",
+      "categories": [
+        "business",
+        "coaches"
+      ],
+      "tagline": "Dynamic, textured captions with a warm editorial paper feel.",
+      "best_for": "Founders, consultants, premium personal brands",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/dyn-linen.mp4",
+      "poster": "previews/dyn-linen.jpg",
+      "engine_style": "dyn-linen",
+      "reference": "references/captions/dyn-linen-c7b84c695694.mp4"
+    },
+    {
+      "id": "dyn-quill",
+      "name": "Quill",
+      "tier": "captions",
+      "categories": [
+        "coaches",
+        "creators"
+      ],
+      "tagline": "Elegant script-inspired captions with dynamic motion.",
+      "best_for": "Coaches, experts, personal brands",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/dyn-quill.mp4",
+      "poster": "previews/dyn-quill.jpg",
+      "engine_style": "dyn-quill",
+      "reference": "references/captions/dyn-quill-b0ac0221ef35.mp4"
+    },
+    {
+      "id": "ghostline",
+      "name": "Ghostline",
+      "tier": "captions",
+      "categories": [
+        "creators",
+        "desi"
+      ],
+      "tagline": "Sharp outlined captions with a bold, modern edge.",
+      "best_for": "Creators, hot takes, tech and SaaS tips",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/ghostline.mp4",
+      "poster": "previews/ghostline.jpg",
+      "engine_style": "ghostline",
+      "reference": "references/captions/ghostline-d59040b41b8a.mp4"
+    },
+    {
+      "id": "magenta-estate",
+      "name": "Magenta Estate",
+      "tier": "captions",
+      "categories": [
+        "creators",
+        "desi"
+      ],
+      "tagline": "Punchy magenta highlight captions with a vivid, energetic look.",
+      "best_for": "Creators, hot takes, Hinglish content",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/magenta-estate.mp4",
+      "poster": "previews/magenta-estate.jpg",
+      "engine_style": "magenta-estate",
+      "reference": "references/captions/magenta-estate-1d24545a29a4.mp4"
+    },
+    {
+      "id": "ml-aura",
+      "name": "Minimal Aura",
+      "tier": "captions",
+      "categories": [
+        "business",
+        "coaches"
+      ],
+      "tagline": "A quieter, minimal take on the soft-glow caption look.",
+      "best_for": "Founders, consultants, calm premium brands",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/ml-aura.mp4",
+      "poster": "previews/ml-aura.jpg",
+      "engine_style": "ml-aura",
+      "reference": "references/captions/ml-aura-23172edea0d0.mp4"
+    },
+    {
+      "id": "ml-blockbuster",
+      "name": "Blockbuster",
+      "tier": "captions",
+      "categories": [
+        "creators",
+        "desi"
+      ],
+      "tagline": "Big, cinematic key-word captions with movie-trailer punch.",
+      "best_for": "Hooky creators, hot takes, entertainment",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/ml-blockbuster.mp4",
+      "poster": "previews/ml-blockbuster.jpg",
+      "engine_style": "ml-blockbuster",
+      "reference": "references/captions/ml-blockbuster-8f3c2b0b266b.mp4"
+    },
+    {
+      "id": "monument",
+      "name": "Monument",
+      "tier": "captions",
+      "categories": [
+        "business",
+        "coaches"
+      ],
+      "tagline": "Bold, structured all-caps captions with a confident, corporate feel.",
+      "best_for": "Founders, B2B, LinkedIn-style talking heads",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/monument.mp4",
+      "poster": "previews/monument.jpg",
+      "engine_style": "monument",
+      "reference": "references/captions/monument-93d4490cf93f.mp4"
+    },
+    {
+      "id": "play-cursive",
+      "name": "Playful Cursive",
+      "tier": "captions",
+      "categories": [
+        "creators",
+        "desi"
+      ],
+      "tagline": "Bouncy handwritten-cursive key words with a fun, casual energy.",
+      "best_for": "Lifestyle and everyday creators, Hinglish content",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/play-cursive.mp4",
+      "poster": "previews/play-cursive.jpg",
+      "engine_style": "play-cursive",
+      "reference": "references/captions/play-cursive-7b0f1af78598.mp4"
+    },
+    {
+      "id": "swiss",
+      "name": "Swiss",
+      "tier": "captions",
+      "categories": [
+        "business",
+        "creators"
+      ],
+      "tagline": "Clean grid-based sans-serif captions, minimal and precise.",
+      "best_for": "SaaS, tech, design-forward founders",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/swiss.mp4",
+      "poster": "previews/swiss.jpg",
+      "engine_style": "swiss",
+      "reference": "references/captions/swiss-1cd8e8fdebb0.mp4"
+    }
+  ]
+}
