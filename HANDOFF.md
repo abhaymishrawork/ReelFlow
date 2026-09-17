@@ -158,3 +158,29 @@ Vercel or Cloudflare Pages (site) + Cloudflare R2 direct presigned uploads + Sup
 + PC worker polling Supabase + Resend/Gmail SMTP delivery emails.
 Needed from user: domain, accounts (Vercel/Cloudflare, R2, Supabase, Razorpay), final brand name (ReelFlow is a placeholder),
 confirmed prices, business email, preview-video consent, legal review. Claude cannot create accounts or enter passwords.
+
+## 2026-09-17: GitHub push, Vercel deploy fix, email switch, Cloudflare Tunnel
+- Repo pushed to `github.com/abhaymishrawork/ReelFlow` (gh CLI on this machine authenticated as collaborator "BA4U",
+  has push access — not the repo owner account). `.gitignore` excludes `orders/`, `projects/`, `references/`, secrets.
+- User connected the GitHub repo to Vercel themselves; it deployed "Ready" but served a plain 404 — no `vercel.json`/
+  `requirements.txt` existed, so Vercel had nothing to build. Fixed: added both files, and hardened
+  `core/jobs.py`/`core/storage.py` with a `/tmp` fallback so the app doesn't crash on Vercel's read-only filesystem.
+  Live at https://reel-flow-pi.vercel.app — **but only as a design showcase**: Vercel's ~4.5 MB request-body limit
+  rejects real raw-video uploads (up to 2 GB), and anything that does get through only lands in ephemeral `/tmp`
+  that isn't guaranteed to survive to the next request. Not a real storefront.
+- Delivery/owner email: Gmail "App password" wasn't available on the user's Google account, so SMTP was replaced with
+  **Resend** as the default email provider (`core/notify.py` now has `_send_via_resend` / `_send_via_smtp`, dispatched
+  by `notify.email_provider` in `config.json`, currently `"resend"`). SMTP code path kept as a fallback (`email_provider:
+  "smtp"`). Needs `REELFLOW_RESEND_API_KEY` env var (Resend free tier, no domain required to start — sends from
+  `onboarding@resend.dev`, which Resend restricts to the account owner's own verified email until a sending domain
+  is verified; verify a domain in Resend before real customers receive delivery emails from it).
+- Set up a **Cloudflare Quick Tunnel** (`cloudflared tunnel --url http://127.0.0.1:8765`, no Cloudflare account needed)
+  pointing at the real local ReelFlow app (`web/app.py` via waitress on port 8765) so uploads/queue/storage/editing
+  pipeline all work for real, unlike Vercel. Current public URL: `https://algorithms-functional-racing-bug.trycloudflare.com`
+  (`config.json` → `public_url` updated to match, since `storage.py`'s `output_url()` builds download links from it).
+  **This URL is ephemeral** — it changes every time `cloudflared` restarts (this PC reboots, network drops, process
+  killed), and quick tunnels have no uptime guarantee (Cloudflare's own disclaimer). For a stable, permanent URL
+  (ideally on the user's own domain), the user needs to run `cloudflared tunnel login` once (opens a browser to
+  authorize a Cloudflare account) and create a named tunnel — Claude can walk through the CLI steps but cannot
+  complete the browser login itself. Both `cloudflared` (tunnel) and `python web/app.py` (site) currently run as
+  background processes on this PC and must both stay running for the public link to work.

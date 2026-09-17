@@ -1,7 +1,10 @@
 """Loads config.json. Any string value "env:NAME" is read from the environment, so secrets never live in the file."""
 import json, os
 
+from dotenv import load_dotenv
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(ROOT, ".env"))
 
 
 def _resolve(v):
