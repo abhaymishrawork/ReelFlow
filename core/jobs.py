@@ -2,7 +2,7 @@
 
 Order lifecycle: new -> editing -> done   (or -> failed)
 """
-import json, os, secrets, threading, time
+import json, os, secrets, tempfile, threading, time
 from . import config
 
 STATUSES = ("new", "editing", "done", "failed")
@@ -17,7 +17,13 @@ class LocalQueue:
 
     def __init__(self, cfg):
         self.dir = config.path(cfg["queue"]["dir"])
-        os.makedirs(self.dir, exist_ok=True)
+        try:
+            os.makedirs(self.dir, exist_ok=True)
+        except OSError:
+            # Read-only deployment (e.g. Vercel's serverless filesystem): fall back to /tmp.
+            # Orders won't persist across requests there - a real deploy needs hosted storage.
+            self.dir = os.path.join(tempfile.gettempdir(), "reelflow-" + os.path.basename(cfg["queue"]["dir"]))
+            os.makedirs(self.dir, exist_ok=True)
         self.lock = threading.Lock()
 
     def _file(self, oid):

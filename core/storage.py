@@ -6,7 +6,7 @@
   output_url(oid, key) -> str                     link the customer downloads from
   local_path(oid, key) -> str | None              lets the website stream a local file
 """
-import os, shutil
+import os, shutil, tempfile
 from . import config
 
 
@@ -20,6 +20,10 @@ class LocalStorage:
 
     def __init__(self, cfg):
         self.dir = config.path(cfg["storage"]["dir"])
+        if not os.access(os.path.dirname(self.dir) or self.dir, os.W_OK):
+            # Read-only deployment (e.g. Vercel's serverless filesystem): fall back to /tmp.
+            # Uploads won't persist across requests there - a real deploy needs hosted storage.
+            self.dir = os.path.join(tempfile.gettempdir(), "reelflow-" + os.path.basename(cfg["storage"]["dir"]))
         self.public = cfg["public_url"].rstrip("/")
 
     def _p(self, oid, key):
