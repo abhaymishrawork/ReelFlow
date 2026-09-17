@@ -9,8 +9,9 @@
 
 Messages to you carry only the order id and style - never the customer's email or video.
 """
-import json, os, smtplib, subprocess, time, urllib.parse, urllib.request
+import os, smtplib, subprocess, time, urllib.parse, urllib.request
 from email.message import EmailMessage
+import requests
 from . import config
 
 
@@ -48,13 +49,15 @@ def _telegram(cfg, title, body):
 
 
 def _send_via_resend(cfg, to, subject, body):
+    # Uses `requests`, not urllib: api.resend.com sits behind Cloudflare, which blocks
+    # urllib's TLS fingerprint (403 / Cloudflare error 1010) but accepts requests' fine.
     r = cfg["notify"]["resend"]
     if not (r["api_key"] and r["from"] and to):
         return False
-    data = json.dumps({"from": r["from"], "to": [to], "subject": subject, "text": body}).encode()
-    req = urllib.request.Request("https://api.resend.com/emails", data=data, method="POST", headers={
-        "Authorization": "Bearer " + r["api_key"], "Content-Type": "application/json"})
-    urllib.request.urlopen(req, timeout=15)
+    resp = requests.post("https://api.resend.com/emails",
+                         json={"from": r["from"], "to": [to], "subject": subject, "text": body},
+                         headers={"Authorization": "Bearer " + r["api_key"]}, timeout=15)
+    resp.raise_for_status()
     return True
 
 
