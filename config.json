@@ -4,7 +4,7 @@
   "contact_email": "abhayworkofficial@gmail.com",
   "host": "127.0.0.1",
   "port": 8765,
-  "public_url": "http://localhost:8765",
+  "public_url": "https://algorithms-functional-racing-bug.trycloudflare.com",
   "max_upload_mb": 2000,
   "min_video_seconds": 10,
   "max_video_minutes": 5,
@@ -20,6 +20,8 @@
     "ntfy_topic": "env:REELFLOW_NTFY_TOPIC",
     "telegram_bot_token": "env:REELFLOW_TELEGRAM_TOKEN",
     "telegram_chat_id": "env:REELFLOW_TELEGRAM_CHAT",
+    "email_provider": "resend",
+    "resend": { "api_key": "env:REELFLOW_RESEND_API_KEY", "from": "ReelFlow <onboarding@resend.dev>" },
     "smtp": { "host": "smtp.gmail.com", "port": 587, "user": "env:REELFLOW_SMTP_USER",
               "password": "env:REELFLOW_SMTP_PASSWORD", "from": "env:REELFLOW_SMTP_USER" },
     "email_customer_on_delivery": false

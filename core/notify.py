@@ -4,11 +4,12 @@
   log       appends to orders/notifications.log (free)
   ntfy      push to your phone with the free ntfy app, no account (set env REELFLOW_NTFY_TOPIC to a long random name)
   telegram  message from your own Telegram bot (set REELFLOW_TELEGRAM_TOKEN + REELFLOW_TELEGRAM_CHAT)
-  email     via SMTP, e.g. a Gmail app password (set REELFLOW_SMTP_USER + REELFLOW_SMTP_PASSWORD)
+  email     via notify.email_provider - "resend" (set REELFLOW_RESEND_API_KEY, no app password needed) or
+            "smtp" (e.g. a Gmail app password - set REELFLOW_SMTP_USER + REELFLOW_SMTP_PASSWORD)
 
 Messages to you carry only the order id and style - never the customer's email or video.
 """
-import os, smtplib, subprocess, time, urllib.parse, urllib.request
+import json, os, smtplib, subprocess, time, urllib.parse, urllib.request
 from email.message import EmailMessage
 from . import config
 
@@ -46,7 +47,18 @@ def _telegram(cfg, title, body):
         urllib.request.urlopen("https://api.telegram.org/bot%s/sendMessage" % n["telegram_bot_token"], data, timeout=15)
 
 
-def send_email(cfg, to, subject, body):
+def _send_via_resend(cfg, to, subject, body):
+    r = cfg["notify"]["resend"]
+    if not (r["api_key"] and r["from"] and to):
+        return False
+    data = json.dumps({"from": r["from"], "to": [to], "subject": subject, "text": body}).encode()
+    req = urllib.request.Request("https://api.resend.com/emails", data=data, method="POST", headers={
+        "Authorization": "Bearer " + r["api_key"], "Content-Type": "application/json"})
+    urllib.request.urlopen(req, timeout=15)
+    return True
+
+
+def _send_via_smtp(cfg, to, subject, body):
     s = cfg["notify"]["smtp"]
     if not (s["user"] and s["password"] and to):
         return False
@@ -60,8 +72,16 @@ def send_email(cfg, to, subject, body):
     return True
 
 
+def send_email(cfg, to, subject, body):
+    provider = cfg["notify"].get("email_provider", "smtp")
+    if provider == "resend":
+        return _send_via_resend(cfg, to, subject, body)
+    return _send_via_smtp(cfg, to, subject, body)
+
+
 def _email(cfg, title, body):
-    send_email(cfg, cfg["notify"]["smtp"]["user"], title, body)
+    to = cfg["contact_email"] if cfg["notify"].get("email_provider") == "resend" else cfg["notify"]["smtp"]["user"]
+    send_email(cfg, to, title, body)
 
 
 CHANNELS = {"desktop": _desktop, "log": _log, "ntfy": _ntfy, "telegram": _telegram, "email": _email}

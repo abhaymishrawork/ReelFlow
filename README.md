@@ -40,7 +40,7 @@ python reelflow.py watch           repeat a reminder while orders wait
 | Order queue | `queue.provider = local` (JSON files) | add a Supabase/Firebase class in `core/jobs.py` |
 | Video storage | `storage.provider = local` | `r2` (Cloudflare R2, implemented, untested) |
 | Notifications | `desktop`, `log` | `ntfy` (phone push), `telegram`, `email` |
-| Customer email on delivery | off | `email_customer_on_delivery: true` + SMTP env vars |
+| Customer email on delivery | off | `email_customer_on_delivery: true` + `REELFLOW_RESEND_API_KEY` env var |
 | Editor | `claude` (you trigger it) | automatic local worker (open-source model) |
 
 Secrets are never written in `config.json`: values like `env:REELFLOW_NTFY_TOPIC` are read from environment variables.
