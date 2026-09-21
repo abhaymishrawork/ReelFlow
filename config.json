@@ -26,6 +26,7 @@
     "resend": { "api_key": "env:REELFLOW_RESEND_API_KEY", "from": "ReelFlow <onboarding@resend.dev>" },
     "smtp": { "host": "smtp.gmail.com", "port": 587, "user": "env:REELFLOW_SMTP_USER",
               "password": "env:REELFLOW_SMTP_PASSWORD", "from": "env:REELFLOW_SMTP_USER" },
+    "email_customer_on_order": true,
     "email_customer_on_delivery": true
   },
 
