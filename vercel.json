@@ -1,8 +1,10 @@
 {
   "builds": [
-    { "src": "web/app.py", "use": "@vercel/python" }
+    { "src": "web/app.py", "use": "@vercel/python" },
+    { "src": "api/blob-upload-token.js", "use": "@vercel/node" }
   ],
   "routes": [
+    { "src": "/api/blob-upload-token", "dest": "api/blob-upload-token.js" },
     { "src": "/(.*)", "dest": "web/app.py" }
   ]
 }

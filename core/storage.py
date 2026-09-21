@@ -93,7 +93,43 @@ class R2Storage(LocalStorage):
                                               ExpiresIn=7 * 24 * 3600)
 
 
-PROVIDERS = {"local": LocalStorage, "r2": R2Storage}
+class BlobStorage:
+    """Videos live in Vercel Blob, so the live site (serverless, no disk) and this PC share storage.
+    Customer uploads go straight from the browser to Blob (see web/templates/index.html + api/blob-upload-token.js) -
+    save_upload is never called for those orders; the order's video "key" is the full Blob URL instead of a filename.
+    fetch/put_output (used by reelflow.py on this PC) use the official `vercel` pip package - run `pip install vercel`
+    once locally. Not needed on Vercel itself: the deployed Flask app never calls fetch/put_output, only output_url."""
+
+    def __init__(self, cfg):
+        self.token = cfg["storage"]["blob"]["token"]
+
+    def save_upload(self, oid, stream, filename):
+        raise NotImplementedError("videos upload directly to Blob from the browser - see api/blob-upload-token.js")
+
+    def fetch(self, oid, key, dest):
+        import vercel.blob as blob
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        if os.path.exists(dest):
+            return dest
+        return blob.download_file(key, dest, token=self.token, overwrite=True)
+
+    def put_output(self, oid, path):
+        import vercel.blob as blob
+        name = "final_" + os.path.basename(path)
+        with open(path, "rb") as f:
+            result = blob.put("%s/%s" % (oid, name), f.read(), access="public",
+                              content_type="video/mp4", add_random_suffix=False,
+                              overwrite=True, token=self.token)
+        return result.url
+
+    def output_url(self, oid, key):
+        return key  # key is already the full Blob URL, set by fetch/put_output above
+
+    def local_path(self, oid, key):
+        return None  # never on this machine's disk - the Flask app links straight to the Blob URL
+
+
+PROVIDERS = {"local": LocalStorage, "r2": R2Storage, "blob": BlobStorage}
 
 
 def get(cfg=None):

@@ -158,3 +158,98 @@ Vercel or Cloudflare Pages (site) + Cloudflare R2 direct presigned uploads + Sup
 + PC worker polling Supabase + Resend/Gmail SMTP delivery emails.
 Needed from user: domain, accounts (Vercel/Cloudflare, R2, Supabase, Razorpay), final brand name (ReelFlow is a placeholder),
 confirmed prices, business email, preview-video consent, legal review. Claude cannot create accounts or enter passwords.
+
+## 2026-09-17: GitHub push, Vercel deploy fix, email switch, Cloudflare Tunnel
+- Repo pushed to `github.com/abhaymishrawork/ReelFlow` (gh CLI on this machine authenticated as collaborator "BA4U",
+  has push access — not the repo owner account). `.gitignore` excludes `orders/`, `projects/`, `references/`, secrets.
+- User connected the GitHub repo to Vercel themselves; it deployed "Ready" but served a plain 404 — no `vercel.json`/
+  `requirements.txt` existed, so Vercel had nothing to build. Fixed: added both files, and hardened
+  `core/jobs.py`/`core/storage.py` with a `/tmp` fallback so the app doesn't crash on Vercel's read-only filesystem.
+  Live at https://reel-flow-pi.vercel.app — **but only as a design showcase**: Vercel's ~4.5 MB request-body limit
+  rejects real raw-video uploads (up to 2 GB), and anything that does get through only lands in ephemeral `/tmp`
+  that isn't guaranteed to survive to the next request. Not a real storefront.
+- Delivery/owner email: Gmail "App password" wasn't available on the user's Google account, so SMTP was replaced with
+  **Resend** as the default email provider (`core/notify.py` now has `_send_via_resend` / `_send_via_smtp`, dispatched
+  by `notify.email_provider` in `config.json`, currently `"resend"`). SMTP code path kept as a fallback (`email_provider:
+  "smtp"`). Needs `REELFLOW_RESEND_API_KEY` env var (Resend free tier, no domain required to start — sends from
+  `onboarding@resend.dev`, which Resend restricts to the account owner's own verified email until a sending domain
+  is verified; verify a domain in Resend before real customers receive delivery emails from it).
+- Set up a **Cloudflare Quick Tunnel** (`cloudflared tunnel --url http://127.0.0.1:8765`, no Cloudflare account needed)
+  pointing at the real local ReelFlow app (`web/app.py` via waitress on port 8765) so uploads/queue/storage/editing
+  pipeline all work for real, unlike Vercel. Current public URL: `https://algorithms-functional-racing-bug.trycloudflare.com`
+  (`config.json` → `public_url` updated to match, since `storage.py`'s `output_url()` builds download links from it).
+  **This URL is ephemeral** — it changes every time `cloudflared` restarts (this PC reboots, network drops, process
+  killed), and quick tunnels have no uptime guarantee (Cloudflare's own disclaimer). For a stable, permanent URL
+  (ideally on the user's own domain), the user needs to run `cloudflared tunnel login` once (opens a browser to
+  authorize a Cloudflare account) and create a named tunnel — Claude can walk through the CLI steps but cannot
+  complete the browser login itself. Both `cloudflared` (tunnel) and `python web/app.py` (site) currently run as
+  background processes on this PC and must both stay running for the public link to work.
+
+## 2026-09-21: Cloudflare/custom-domain deployment paused
+User had set up `anuj4u.in` → `app.anuj4u.in` on Cloudflare (named tunnel "reelflow", DNS nameservers switched,
+zone activated, DNS records fixed) but then decided to stop: **not using Cloudflare or `app.anuj4u.in` right now** —
+plans to buy a different domain later. `config.json` → `public_url` reverted to `http://localhost:8765`. The
+`cloudflared` tunnel process is no longer running. Current focus per user: make the website itself look fully
+finished/polished. Also fixed a real mobile bug found during this pass: below 860px the nav links (Styles/How it
+works/Pricing/FAQ) vanished with no way to reach them (no hamburger existed) — added one (`web/templates/base.html`
+`#mobileMenu` + `.nav-toggle`/`.mobile-menu` in `style.css`).
+
+## 2026-09-21: Vercel Blob + Supabase - making the live Vercel site the real order intake
+User hit `FUNCTION_PAYLOAD_TOO_LARGE` uploading a real video on the Vercel showcase deployment (Vercel serverless
+functions cap request bodies ~4.5 MB) and asked about the Vercel Blob store they'd already connected to the project.
+Decision (user picked explicitly, see AskUserQuestion): make **Vercel the real order intake**, not just a design
+showcase - needs Vercel Blob (video storage) + Supabase (order queue, since Vercel functions are stateless/serverless
+and this PC needs a way to discover new orders that isn't a local folder).
+
+**What changed:**
+- `core/config.py` `load()`: when `VERCEL` env var is set (automatic on Vercel) or `REELFLOW_REMOTE=1` is in `.env`,
+  forces `queue.provider="supabase"` and `storage.provider="blob"` instead of the config.json defaults (`local`/`local`).
+  Local `python web/app.py` dev testing is untouched by default - still local queue + direct upload, exactly as before.
+- `core/jobs.py`: new `SupabaseQueue` - orders as one `data` jsonb column per row in a Supabase table, talked to
+  directly via `requests` against Supabase's PostgREST API (no extra SDK). Needs this table (run once in the
+  Supabase SQL editor):
+  ```sql
+  create table orders (
+    id text primary key,
+    status text not null,
+    created text not null,
+    data jsonb not null
+  );
+  ```
+- `core/storage.py`: new `BlobStorage`. `save_upload` is never called for Blob orders - the browser uploads straight
+  to Blob (bypassing the function payload limit entirely) and the order's video "key" becomes the full Blob URL.
+  `fetch`/`put_output` (used by `reelflow.py` on this PC to download the raw video for editing and upload the
+  finished reel) use the official `vercel` pip package (`pip install vercel` - already installed locally 2026-09-21).
+  Vercel's own deployed Flask app never imports that package (those two methods aren't called there, only
+  `output_url`, which just returns the Blob URL as-is) - kept out of `requirements.txt` on purpose to not bloat the
+  Python function bundle.
+- `web/app.py`: `create_order()` now accepts either a real file upload (`video` field, unchanged local/dev path) or
+  `video_url`+`video_filename` form fields (Blob path) - duration can't be probed server-side for the Blob path
+  since the bytes never touch the function; it's confirmed instead when this PC downloads the video to edit it.
+  `blob_enabled` template flag = `bool(os.environ.get("VERCEL"))`.
+- `web/templates/index.html`: submit handler branches on `blob_enabled`. On Vercel, it first uploads the video
+  straight to Blob using `@vercel/blob/client`'s `upload()` (loaded from `esm.sh` at runtime, no bundler needed),
+  then posts the small `video_url` field to `/order`. Locally, unchanged `XMLHttpRequest` direct-file POST.
+- `api/blob-upload-token.js` (new) + root `package.json`: a small **Node** serverless function (Vercel supports
+  mixing Python + Node functions in one project) whose only job is minting the short-lived client upload token -
+  this piece genuinely has to be Node, the official Python `vercel` SDK doesn't expose an equivalent (checked its
+  source directly, not just docs). `vercel.json` now builds/routes both `web/app.py` (Python, catch-all) and
+  `api/blob-upload-token.js` (Node, `/api/blob-upload-token` only).
+
+**What the user still needs to do (none of this can be done by Claude - needs an account + the Vercel dashboard):**
+1. Create a free Supabase project (supabase.com), run the `create table orders (...)` SQL above in its SQL editor.
+2. From Supabase project settings, copy the **Project URL** and the **service_role key** (not the anon key - the
+   service role key is needed for the PC and the server to freely read/write every order).
+3. From the Vercel project's Storage tab (the Blob store already connected), copy `BLOB_READ_WRITE_TOKEN`.
+4. Add all three (`SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `BLOB_READ_WRITE_TOKEN`) to **both**: this PC's `.env`
+   (uncomment the lines already added there) AND the Vercel project's Environment Variables (Production + Preview).
+5. To have `reelflow.py` on this PC pull real orders from the live site instead of the local `orders/` folder,
+   uncomment `REELFLOW_REMOTE=1` in `.env` too.
+6. Redeploy on Vercel (push, or trigger a redeploy) once the env vars are set so the Node function picks up
+   `BLOB_READ_WRITE_TOKEN` and `web/app.py` picks up the Supabase ones.
+
+**Not yet done / known gaps:** the order status page (`/order/<id>`) and `/download/<oid>/<key>` route still assume
+whatever storage provider is active handles them correctly - `BlobStorage.output_url` does (returns the Blob URL
+directly, so `/download` is only used for the local path). Not tested end-to-end yet since it needs the user's
+Supabase project + env vars first. Deletion/lifecycle of raw uploads in Blob after 30 days (per the privacy page's
+promise) is not automated yet - would need a small scheduled cleanup job.

@@ -10,16 +10,20 @@
   "max_video_minutes": 5,
   "allowed_ext": [".mp4", ".mov", ".m4v", ".mkv", ".webm"],
 
-  "queue":   { "provider": "local", "dir": "orders" },
+  "queue":   { "provider": "local", "dir": "orders",
+               "supabase": { "url": "env:SUPABASE_URL", "service_key": "env:SUPABASE_SERVICE_KEY" } },
   "storage": { "provider": "local", "dir": "orders",
                "r2": { "endpoint": "env:R2_ENDPOINT", "bucket": "env:R2_BUCKET",
-                       "access_key": "env:R2_ACCESS_KEY", "secret_key": "env:R2_SECRET_KEY" } },
+                       "access_key": "env:R2_ACCESS_KEY", "secret_key": "env:R2_SECRET_KEY" },
+               "blob": { "token": "env:BLOB_READ_WRITE_TOKEN" } },
 
   "notify": {
     "providers": ["desktop", "log"],
     "ntfy_topic": "env:REELFLOW_NTFY_TOPIC",
     "telegram_bot_token": "env:REELFLOW_TELEGRAM_TOKEN",
     "telegram_chat_id": "env:REELFLOW_TELEGRAM_CHAT",
+    "email_provider": "resend",
+    "resend": { "api_key": "env:REELFLOW_RESEND_API_KEY", "from": "ReelFlow <onboarding@resend.dev>" },
     "smtp": { "host": "smtp.gmail.com", "port": 587, "user": "env:REELFLOW_SMTP_USER",
               "password": "env:REELFLOW_SMTP_PASSWORD", "from": "env:REELFLOW_SMTP_USER" },
     "email_customer_on_delivery": false

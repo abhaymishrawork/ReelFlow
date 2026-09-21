@@ -3,6 +3,7 @@
 Order lifecycle: new -> editing -> done   (or -> failed)
 """
 import json, os, secrets, tempfile, threading, time
+import requests
 from . import config
 
 STATUSES = ("new", "editing", "done", "failed")
@@ -72,9 +73,60 @@ class LocalQueue:
         return sorted(out, key=lambda o: o["created"])
 
 
-PROVIDERS = {"local": LocalQueue}
-# Hosted queue later (Supabase, Firebase, Airtable ...): write a class with
-# new_id/create/get/save/set_status/list, register it here, change config.json -> queue.provider.
+class SupabaseQueue:
+    """Orders in a Supabase Postgres table (one `data` jsonb column per row) so the live Vercel site
+    and this PC's `reelflow.py` see the same queue. Needs a table (see HANDOFF.md for the SQL):
+      create table orders (id text primary key, status text not null, created text not null, data jsonb not null);
+    Talks to Supabase's auto-generated REST API (PostgREST) directly with `requests` - no extra SDK needed."""
+
+    def __init__(self, cfg):
+        s = cfg["queue"]["supabase"]
+        if not (s["url"] and s["service_key"]):
+            raise RuntimeError("Supabase queue selected but SUPABASE_URL / SUPABASE_SERVICE_KEY are not set in .env")
+        self.url = s["url"].rstrip("/") + "/rest/v1/orders"
+        self.headers = {"apikey": s["service_key"], "Authorization": "Bearer " + s["service_key"],
+                        "Content-Type": "application/json"}
+
+    def new_id(self):
+        return time.strftime("%y%m%d") + "-" + secrets.token_hex(6)
+
+    def create(self, oid, data):
+        order = dict(data, id=oid, status="new", created=_now(), history=[[_now(), "new", "order received"]])
+        r = requests.post(self.url, headers=self.headers,
+                          json={"id": oid, "status": "new", "created": order["created"], "data": order}, timeout=20)
+        r.raise_for_status()
+        return order
+
+    def get(self, oid):
+        r = requests.get(self.url, headers=self.headers, params={"id": "eq." + oid, "select": "data"}, timeout=20)
+        r.raise_for_status()
+        rows = r.json()
+        return rows[0]["data"] if rows else None
+
+    def save(self, order):
+        r = requests.patch(self.url, headers=self.headers, params={"id": "eq." + order["id"]},
+                           json={"status": order["status"], "data": order}, timeout=20)
+        r.raise_for_status()
+
+    def set_status(self, oid, status, note="", **fields):
+        assert status in STATUSES
+        o = self.get(oid)
+        o.update(fields)
+        o["status"] = status
+        o["history"].append([_now(), status, note])
+        self.save(o)
+        return o
+
+    def list(self, status=None):
+        params = {"select": "data", "order": "created.asc"}
+        if status:
+            params["status"] = "eq." + status
+        r = requests.get(self.url, headers=self.headers, params=params, timeout=20)
+        r.raise_for_status()
+        return [row["data"] for row in r.json()]
+
+
+PROVIDERS = {"local": LocalQueue, "supabase": SupabaseQueue}
 
 
 def get(cfg=None):
