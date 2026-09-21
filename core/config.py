@@ -28,6 +28,9 @@ def load():
     if os.environ.get("VERCEL") or os.environ.get("REELFLOW_REMOTE"):
         cfg["queue"]["provider"] = "supabase"
         cfg["storage"]["provider"] = "blob"
+        # Links this PC emails to customers (delivery links, etc.) must point at the live site,
+        # not this machine's localhost - only relevant once orders are flowing through Supabase/Blob.
+        cfg["public_url"] = os.environ.get("REELFLOW_PUBLIC_URL", cfg["public_url"])
     return cfg
 
 

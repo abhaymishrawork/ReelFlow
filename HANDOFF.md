@@ -248,8 +248,27 @@ and this PC needs a way to discover new orders that isn't a local folder).
 6. Redeploy on Vercel (push, or trigger a redeploy) once the env vars are set so the Node function picks up
    `BLOB_READ_WRITE_TOKEN` and `web/app.py` picks up the Supabase ones.
 
-**Not yet done / known gaps:** the order status page (`/order/<id>`) and `/download/<oid>/<key>` route still assume
-whatever storage provider is active handles them correctly - `BlobStorage.output_url` does (returns the Blob URL
-directly, so `/download` is only used for the local path). Not tested end-to-end yet since it needs the user's
-Supabase project + env vars first. Deletion/lifecycle of raw uploads in Blob after 30 days (per the privacy page's
-promise) is not automated yet - would need a small scheduled cleanup job.
+**2026-09-21: End-to-end verified live** - merged the Blob + Supabase PR, redeployed Production, and ran a full
+real order through `https://reel-flow-pi.vercel.app`: browser upload (5.7 MB, well past the old 4.5 MB function
+limit) -> Blob -> Supabase row -> `reelflow.py list/prepare` on this PC pulled the raw video -> `deliver` pushed the
+finished reel back to Blob, flipped the order to `done`, and emailed the customer via Resend with a link to the
+live order page. Confirmed the download link on `/order/<id>` points straight at the Blob-hosted file.
+
+Two gaps found and fixed during that test:
+- `notify.email_customer_on_delivery` was `false` in `config.json` - customers were never actually emailed. Now `true`.
+- `deliver()` built the customer link from `public_url`, which is `http://localhost:8765` for local dev. Added
+  `REELFLOW_PUBLIC_URL` in `.env` (used only when `REELFLOW_REMOTE`/`VERCEL` is set - see `core/config.py`), set to
+  `https://reel-flow-pi.vercel.app` for now; swap it once a real domain is bought.
+
+**File retention is 7 days, not automated yet.** Site copy (`legal.html`, `base.html`, `index.html`) now says 7 days
+consistently. Added `python reelflow.py cleanup [days=7]` - finds orders `done` more than `days` ago and deletes
+both the raw upload and the final reel from Blob (`BlobStorage.delete`, wraps `vercel.blob.delete`), leaving the
+order row itself for accounting and marking it `purged: true` so it isn't reprocessed. **This does not run on a
+schedule yet** - run it manually for now (`python reelflow.py cleanup`), or set up a Windows Scheduled Task to run
+it daily if you want it automatic (ask Claude to set this up if so - didn't do it unprompted since it's a
+persistent system change).
+
+**Still open:** the Cloudflare `Workers Builds: reelflow` GitHub check will keep failing on every PR until its
+Git integration is disconnected in the Cloudflare dashboard (Workers & Pages -> reelflow -> Settings -> Build) -
+Workers were ruled out for this Flask app (no persistent filesystem/ffmpeg). Harmless to leave failing, but worth
+cleaning up.

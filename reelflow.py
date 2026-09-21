@@ -6,6 +6,7 @@
   python reelflow.py deliver <order_id> <video.mp4>   publish the finished reel and mark the order done
   python reelflow.py fail <order_id> "<reason>"       mark an order failed (you contact the customer)
   python reelflow.py watch [seconds=60]               remind you on this PC while new orders are waiting
+  python reelflow.py cleanup [days=7]                 delete raw+output files for orders delivered >days ago
 """
 import json, os, subprocess, sys, time
 
@@ -107,6 +108,31 @@ def deliver(oid, path):
     print("customer:", o["customer"]["email"], "(send them the link if email is off)")
 
 
+def cleanup(days=7):
+    """Deletes raw+output files (from Blob) for orders delivered more than `days` ago, to save storage.
+    Keeps the order row itself (name/email/order details) for accounting - only the video files go."""
+    if not hasattr(S, "delete"):
+        sys.exit("storage provider %r has no delete() - nothing to clean up" % CFG["storage"]["provider"])
+    cutoff = time.time() - days * 86400
+    purged = 0
+    for o in Q.list("done"):
+        if o.get("purged"):
+            continue
+        done_at = next((h[0] for h in reversed(o["history"]) if h[1] == "done"), None)
+        if not done_at or time.mktime(time.strptime(done_at, "%Y-%m-%d %H:%M:%S")) > cutoff:
+            continue
+        for key in (o["video"].get("key"), (o.get("output") or {}).get("key")):
+            if key:
+                try:
+                    S.delete(key)
+                except Exception as e:
+                    print("failed to delete", key, "-", e)
+        Q.set_status(o["id"], "done", "files purged after %d days" % days, purged=True)
+        purged += 1
+        print("purged", o["id"])
+    print("done - purged %d order(s)" % purged)
+
+
 def watch(every):
     seen = set()
     print("watching for new orders every %ds - Ctrl+C to stop" % every)
@@ -136,5 +162,7 @@ if __name__ == "__main__":
         print("marked failed:", a[1])
     elif a[0] == "watch":
         watch(int(a[1]) if len(a) > 1 else 60)
+    elif a[0] == "cleanup":
+        cleanup(int(a[1]) if len(a) > 1 else 7)
     else:
         print(__doc__)

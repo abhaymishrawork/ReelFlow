@@ -128,6 +128,10 @@ class BlobStorage:
     def local_path(self, oid, key):
         return None  # never on this machine's disk - the Flask app links straight to the Blob URL
 
+    def delete(self, key):
+        import vercel.blob as blob
+        blob.delete(key, token=self.token)
+
 
 PROVIDERS = {"local": LocalStorage, "r2": R2Storage, "blob": BlobStorage}
 
