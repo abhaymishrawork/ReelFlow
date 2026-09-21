@@ -143,6 +143,13 @@ def create_order():
     })
     style_name = STYLE_BY_ID[style]["name"]
     notify.owner("New reel order", "%s | %s (%s) | %s MB" % (oid, style_name, order["tier"], order["video"]["size_mb"]), CFG)
+    if CFG["notify"].get("email_customer_on_order"):
+        link = url_for("order_page", oid=oid, _external=True)
+        notify.send_email(CFG, email, "We received your video",
+                          "Hi %s,\n\nWe received your video and you picked the \"%s\" style. "
+                          "We're starting your edit now and will email you when it's ready - usually within 24 hours.\n\n"
+                          "Track your order any time here:\n%s\n\nThanks!\n%s"
+                          % (clean(request.form.get("name"), 120) or "there", style_name, link, CFG["site_name"]))
     return redirect(url_for("order_page", oid=oid, new=1))
 
 
