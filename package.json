@@ -1,0 +1,8 @@
+{
+  "name": "reelflow-blob-upload",
+  "private": true,
+  "description": "Only needed for api/blob-upload-token.js - the site itself is Flask/Python (see requirements.txt).",
+  "dependencies": {
+    "@vercel/blob": "2.8.0"
+  }
+}

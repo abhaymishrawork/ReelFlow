@@ -36,10 +36,13 @@ def probe_seconds(path):
         return None
 
 
+BLOB_ENABLED = bool(os.environ.get("VERCEL"))  # true only on the deployed site - see core/config.py
+
+
 def page(**kw):
     return render_template("index.html", cfg=CFG, styles=CFG["styles"], caption_styles=CFG["caption_styles"],
                            tiers=CFG["tiers"], categories=CFG["categories"], currency=PRICING["currency"],
-                           ba=CFG["before_after"], style_ids=STYLE_IDS, **kw)
+                           ba=CFG["before_after"], style_ids=STYLE_IDS, blob_enabled=BLOB_ENABLED, **kw)
 
 
 def clean(v, n=600):
@@ -84,14 +87,17 @@ def home():
 @app.post("/order")
 def create_order():
     f = request.files.get("video")
+    video_url = request.form.get("video_url")       # set when the browser already uploaded straight to Blob
+    video_name = request.form.get("video_filename", "")
     style = request.form.get("style")
     email = clean(request.form.get("email"), 200)
+    ext = os.path.splitext((f.filename if f else video_name) or "")[1].lower()
     err = None
     if style not in STYLE_IDS:
         err = "Please choose an editing style."
-    elif not f or not f.filename:
+    elif not video_url and (not f or not f.filename):
         err = "Please choose a video file."
-    elif os.path.splitext(f.filename)[1].lower() not in CFG["allowed_ext"]:
+    elif ext not in CFG["allowed_ext"]:
         err = "Please upload an MP4, MOV, M4V, MKV or WEBM file."
     elif not clean(request.form.get("name")):
         err = "Please add your name."
@@ -103,16 +109,23 @@ def create_order():
         return page(picked=style or "", error=err, form=request.form), 400
 
     oid = Q.new_id()
-    key = S.save_upload(oid, f.stream, f.filename)
-    local = S.local_path(oid, key)
-    secs = probe_seconds(local) if local else None
-    limit = CFG["max_video_minutes"] * 60
-    if secs is None or secs < CFG["min_video_seconds"] or secs > limit + 1:
-        shutil.rmtree(os.path.join(config.path(CFG["storage"]["dir"]), oid), ignore_errors=True)
-        msg = ("We couldn't read that video. Please upload an MP4 or MOV file." if secs is None else
-               "Your video is %d:%02d long. Please upload a video between %d seconds and %d minutes."
-               % (secs // 60, secs % 60, CFG["min_video_seconds"], CFG["max_video_minutes"]))
-        return page(picked=style, error=msg, form=request.form), 400
+    if video_url:
+        # Already uploaded directly to Blob from the browser (see api/blob-upload-token.js) - the function
+        # here only ever sees this small form post, never the video bytes, so there's no size limit to hit.
+        # Duration can't be probed without the file on disk; it's confirmed when this PC downloads it to edit.
+        key, secs, size_mb = video_url, None, None
+    else:
+        key = S.save_upload(oid, f.stream, f.filename)
+        local = S.local_path(oid, key)
+        secs = probe_seconds(local) if local else None
+        limit = CFG["max_video_minutes"] * 60
+        if secs is None or secs < CFG["min_video_seconds"] or secs > limit + 1:
+            shutil.rmtree(os.path.join(config.path(CFG["storage"]["dir"]), oid), ignore_errors=True)
+            msg = ("We couldn't read that video. Please upload an MP4 or MOV file." if secs is None else
+                   "Your video is %d:%02d long. Please upload a video between %d seconds and %d minutes."
+                   % (secs // 60, secs % 60, CFG["min_video_seconds"], CFG["max_video_minutes"]))
+            return page(picked=style, error=msg, form=request.form), 400
+        size_mb = round(os.path.getsize(local) / 1e6, 1) if local else None
     order = Q.create(oid, {
         "style": style,
         "tier": STYLE_BY_ID[style]["tier"],
@@ -125,8 +138,8 @@ def create_order():
             "language": clean(request.form.get("language"), 40) or "en",
             "notes": clean(request.form.get("notes"), 1500),
         },
-        "video": {"key": key, "original_name": clean(f.filename, 200), "seconds": round(secs, 1),
-                  "size_mb": round(os.path.getsize(S.local_path(oid, key)) / 1e6, 1) if S.local_path(oid, key) else None},
+        "video": {"key": key, "original_name": clean(f.filename if f else video_name, 200),
+                  "seconds": round(secs, 1) if secs else None, "size_mb": size_mb},
     })
     style_name = STYLE_BY_ID[style]["name"]
     notify.owner("New reel order", "%s | %s (%s) | %s MB" % (oid, style_name, order["tier"], order["video"]["size_mb"]), CFG)

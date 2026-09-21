@@ -22,6 +22,12 @@ def load():
     lib = json.load(open(os.path.join(ROOT, "styles.json"), encoding="utf-8"))
     cfg["styles"], cfg["categories"], cfg["before_after"] = lib["styles"], lib["categories"], lib.get("before_after")
     cfg["caption_styles"], cfg["tiers"] = lib.get("caption_styles", []), lib.get("tiers", [])
+    # On Vercel (VERCEL is set automatically) or when this PC is set to process real live orders
+    # (REELFLOW_REMOTE=1 in .env), switch to the shared Supabase queue + Vercel Blob storage instead
+    # of this machine's local orders/ folder - the live site's serverless functions have no disk.
+    if os.environ.get("VERCEL") or os.environ.get("REELFLOW_REMOTE"):
+        cfg["queue"]["provider"] = "supabase"
+        cfg["storage"]["provider"] = "blob"
     return cfg
 
 
