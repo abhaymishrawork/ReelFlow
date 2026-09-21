@@ -4,7 +4,7 @@
   "contact_email": "abhayworkofficial@gmail.com",
   "host": "127.0.0.1",
   "port": 8765,
-  "public_url": "https://algorithms-functional-racing-bug.trycloudflare.com",
+  "public_url": "http://localhost:8765",
   "max_upload_mb": 2000,
   "min_video_seconds": 10,
   "max_video_minutes": 5,

@@ -184,3 +184,11 @@ confirmed prices, business email, preview-video consent, legal review. Claude ca
   authorize a Cloudflare account) and create a named tunnel — Claude can walk through the CLI steps but cannot
   complete the browser login itself. Both `cloudflared` (tunnel) and `python web/app.py` (site) currently run as
   background processes on this PC and must both stay running for the public link to work.
+
+## 2026-09-21: Cloudflare/custom-domain deployment paused
+User had set up `anuj4u.in` → `app.anuj4u.in` on Cloudflare (named tunnel "reelflow", DNS nameservers switched,
+zone activated, DNS records fixed) but then decided to stop: **not using Cloudflare or `app.anuj4u.in` right now** —
+plans to buy a different domain later. `config.json` → `public_url` reverted to `http://localhost:8765`. The
+`cloudflared` tunnel process is no longer running. Storage/uploads destination is also undecided — "we will decide
+later where users can upload all things." Current focus per user: make the website itself look fully finished/polished
+(local dev, no public URL needed yet); deployment/domain/storage decisions are deferred until a domain is purchased.
