@@ -411,3 +411,7 @@ h2.light em { color: var(--gold-hi); }
   .gallery .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
   .gallery .tabs { gap: 20px; }
 }
+
+/* rotating hero word */
+.hero h1 .rotate { display: inline-block; transition: opacity .35s ease, transform .35s ease; }
+.hero h1 .rotate.out { opacity: 0; transform: translateY(8px); }
