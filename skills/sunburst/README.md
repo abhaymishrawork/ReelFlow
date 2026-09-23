@@ -1,18 +1,18 @@
-# Monument
+# Sunburst
 
-> Bold, structured all-caps captions with a confident, corporate feel.
+> Huge bright yellow words behind you, small script words in front.
 
 | | |
 |---|---|
-| Style id (what the order stores) | `monument` |
+| Style id (what the order stores) | `sunburst` |
 | Tier | Captions Only |
 | Editing skill | `embedded-captions` |
-| Engine style | `monument` |
-| Best for | Founders, B2B, LinkedIn-style talking heads |
-| Categories | Behind the Person |
+| Engine style | `sunburst` |
+| Best for | Hooky tips, lists, energetic creators |
+| Categories | Behind the Person, Playful |
 | Includes | Designed captions, Retakes removed |
-| Website preview | `web/static/previews/monument.mp4` |
-| Style reference | `references/captions/monument-93d4490cf93f.mp4` (private - style DNA only, never show publicly) |
+| Website preview | `web/static/previews/sunburst.mp4` |
+| Style reference | `references/captions/sunburst-0c1bc1ff648a.mp4` (private - style DNA only, never show publicly) |
 
 ## How to edit an order in this style
 

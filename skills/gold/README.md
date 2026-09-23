@@ -9,7 +9,7 @@
 | Editing skill | `premium-motion-graphics-editor` |
 | Engine style | `gold` |
 | Best for | Founders, consultants, high-ticket services |
-| Categories | Business, Coaches |
+| Categories | Popular |
 | Includes | Motion graphics, Real B-roll, Tool screens, Sound design |
 | Website preview | `web/static/previews/gold.mp4` |
 | Style reference | none - use the house look for this style |

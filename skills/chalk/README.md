@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `chalk` |
 | Best for | Educators, explainers, how-to creators |
-| Categories | Business, Coaches |
+| Categories | Playful |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/chalk.mp4` |
 | Style reference | `references/captions/chalk-a4cb3c2bdea4.mp4` (private - style DNA only, never show publicly) |

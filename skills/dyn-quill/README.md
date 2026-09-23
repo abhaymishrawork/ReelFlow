@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `dyn-quill` |
 | Best for | Coaches, experts, personal brands |
-| Categories | Coaches, Creators |
+| Categories | Dynamic, Editorial |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/dyn-quill.mp4` |
 | Style reference | `references/captions/dyn-quill-b0ac0221ef35.mp4` (private - style DNA only, never show publicly) |

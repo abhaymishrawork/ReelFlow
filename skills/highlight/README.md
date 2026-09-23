@@ -9,7 +9,7 @@
 | Editing skill | `premium-motion-graphics-editor` |
 | Engine style | `highlight` |
 | Best for | Tips, hot takes, Hinglish creators |
-| Categories | Creators, Desi / Hinglish |
+| Categories | Real Estate |
 | Includes | Motion graphics, Real B-roll, Tool screens, Sound design |
 | Website preview | `web/static/previews/highlight.mp4` |
 | Style reference | none - use the house look for this style |

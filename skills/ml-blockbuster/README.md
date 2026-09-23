@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `ml-blockbuster` |
 | Best for | Hooky creators, hot takes, entertainment |
-| Categories | Creators, Desi / Hinglish |
+| Categories | Popular, Behind the Person, Multiline |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/ml-blockbuster.mp4` |
 | Style reference | `references/captions/ml-blockbuster-8f3c2b0b266b.mp4` (private - style DNA only, never show publicly) |

@@ -1,20 +1,36 @@
 {
   "categories": [
     {
-      "id": "business",
-      "label": "Business"
+      "id": "popular",
+      "label": "Popular"
     },
     {
-      "id": "creators",
-      "label": "Creators"
+      "id": "real-estate",
+      "label": "Real Estate"
     },
     {
-      "id": "coaches",
-      "label": "Coaches"
+      "id": "behind",
+      "label": "Behind the Person"
     },
     {
-      "id": "desi",
-      "label": "Desi / Hinglish"
+      "id": "playful",
+      "label": "Playful"
+    },
+    {
+      "id": "multiline",
+      "label": "Multiline"
+    },
+    {
+      "id": "dynamic",
+      "label": "Dynamic"
+    },
+    {
+      "id": "editorial",
+      "label": "Editorial"
+    },
+    {
+      "id": "social",
+      "label": "Social"
     }
   ],
   "tiers": [
@@ -48,8 +64,7 @@
       "name": "Gold Premium",
       "tier": "full",
       "categories": [
-        "business",
-        "coaches"
+        "popular"
       ],
       "tagline": "Luxury gold captions, headlines behind you, cinematic warm grade.",
       "best_for": "Founders, consultants, high-ticket services",
@@ -70,8 +85,8 @@
       "name": "Bold Pop",
       "tier": "full",
       "categories": [
-        "creators",
-        "coaches"
+        "dynamic",
+        "editorial"
       ],
       "tagline": "Punchy yellow key words, clean white headlines, bright modern look.",
       "best_for": "Creators, educators, tech and SaaS tips",
@@ -92,8 +107,7 @@
       "name": "Green Highlight",
       "tier": "full",
       "categories": [
-        "creators",
-        "desi"
+        "real-estate"
       ],
       "tagline": "Bold key word on a lime highlight box, crisp white headlines.",
       "best_for": "Tips, hot takes, Hinglish creators",
@@ -114,8 +128,7 @@
       "name": "Editorial Serif",
       "tier": "full",
       "categories": [
-        "business",
-        "coaches"
+        "behind"
       ],
       "tagline": "Elegant italic serif words, soft film grade, magazine feel.",
       "best_for": "Coaches, experts, personal brands",
@@ -136,8 +149,7 @@
       "name": "Swiss Clean",
       "tier": "full",
       "categories": [
-        "business",
-        "creators"
+        "multiline"
       ],
       "tagline": "Minimal black-on-white key words, tight grid captions, no noise.",
       "best_for": "Consultants, SaaS founders, clean personal brands",
@@ -158,8 +170,7 @@
       "name": "Neon Nights",
       "tier": "full",
       "categories": [
-        "creators",
-        "desi"
+        "behind"
       ],
       "tagline": "Glowing neon key words on a dark grade, high-energy pacing.",
       "best_for": "Nightlife, fitness, Gen-Z creators",
@@ -182,8 +193,8 @@
       "name": "Agent Story",
       "tier": "captions",
       "categories": [
-        "business",
-        "creators"
+        "popular",
+        "real-estate"
       ],
       "tagline": "Narrative caption reveal built for voiceover storytelling.",
       "best_for": "Story-driven talking heads, case studies",
@@ -201,8 +212,7 @@
       "name": "Aura",
       "tier": "captions",
       "categories": [
-        "coaches",
-        "creators"
+        "behind"
       ],
       "tagline": "Soft glow key words with a calm, premium rhythm.",
       "best_for": "Coaches, wellness and personal-brand creators",
@@ -220,8 +230,7 @@
       "name": "Chalk",
       "tier": "captions",
       "categories": [
-        "business",
-        "coaches"
+        "playful"
       ],
       "tagline": "Hand-drawn chalk-style captions with a lecture feel.",
       "best_for": "Educators, explainers, how-to creators",
@@ -239,8 +248,7 @@
       "name": "Linen",
       "tier": "captions",
       "categories": [
-        "business",
-        "coaches"
+        "dynamic"
       ],
       "tagline": "Dynamic, textured captions with a warm editorial paper feel.",
       "best_for": "Founders, consultants, premium personal brands",
@@ -258,8 +266,8 @@
       "name": "Quill",
       "tier": "captions",
       "categories": [
-        "coaches",
-        "creators"
+        "dynamic",
+        "editorial"
       ],
       "tagline": "Elegant script-inspired captions with dynamic motion.",
       "best_for": "Coaches, experts, personal brands",
@@ -277,8 +285,8 @@
       "name": "Ghostline",
       "tier": "captions",
       "categories": [
-        "creators",
-        "desi"
+        "popular",
+        "behind"
       ],
       "tagline": "Sharp outlined captions with a bold, modern edge.",
       "best_for": "Creators, hot takes, tech and SaaS tips",
@@ -296,8 +304,8 @@
       "name": "Magenta Estate",
       "tier": "captions",
       "categories": [
-        "creators",
-        "desi"
+        "popular",
+        "real-estate"
       ],
       "tagline": "Punchy magenta highlight captions with a vivid, energetic look.",
       "best_for": "Creators, hot takes, Hinglish content",
@@ -315,8 +323,9 @@
       "name": "Minimal Aura",
       "tier": "captions",
       "categories": [
-        "business",
-        "coaches"
+        "popular",
+        "multiline",
+        "editorial"
       ],
       "tagline": "A quieter, minimal take on the soft-glow caption look.",
       "best_for": "Founders, consultants, calm premium brands",
@@ -334,8 +343,9 @@
       "name": "Blockbuster",
       "tier": "captions",
       "categories": [
-        "creators",
-        "desi"
+        "popular",
+        "behind",
+        "multiline"
       ],
       "tagline": "Big, cinematic key-word captions with movie-trailer punch.",
       "best_for": "Hooky creators, hot takes, entertainment",
@@ -353,8 +363,7 @@
       "name": "Monument",
       "tier": "captions",
       "categories": [
-        "business",
-        "coaches"
+        "behind"
       ],
       "tagline": "Bold, structured all-caps captions with a confident, corporate feel.",
       "best_for": "Founders, B2B, LinkedIn-style talking heads",
@@ -372,8 +381,7 @@
       "name": "Playful Cursive",
       "tier": "captions",
       "categories": [
-        "creators",
-        "desi"
+        "playful"
       ],
       "tagline": "Bouncy handwritten-cursive key words with a fun, casual energy.",
       "best_for": "Lifestyle and everyday creators, Hinglish content",
@@ -391,8 +399,7 @@
       "name": "Swiss",
       "tier": "captions",
       "categories": [
-        "business",
-        "creators"
+        "multiline"
       ],
       "tagline": "Clean grid-based sans-serif captions, minimal and precise.",
       "best_for": "SaaS, tech, design-forward founders",
@@ -404,6 +411,63 @@
       "poster": "previews/swiss.jpg",
       "engine_style": "swiss",
       "reference": "references/captions/swiss-1cd8e8fdebb0.mp4"
+    },
+    {
+      "id": "dyn-storyline",
+      "name": "Storyline",
+      "tier": "captions",
+      "categories": [
+        "popular",
+        "dynamic",
+        "editorial"
+      ],
+      "tagline": "Big serif key words that flow line by line with the story.",
+      "best_for": "Storytellers, coaches, personal brands",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/dyn-storyline.mp4",
+      "poster": "previews/dyn-storyline.jpg",
+      "engine_style": "dyn-storyline",
+      "reference": "references/captions/dyn-storyline-b96e908d95a0.mp4"
+    },
+    {
+      "id": "liquid-glass",
+      "name": "Liquid Glass",
+      "tier": "captions",
+      "categories": [
+        "social"
+      ],
+      "tagline": "Soft frosted-glass caption pill, clean and native to social feeds.",
+      "best_for": "Everyday creators, lifestyle, UGC",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/liquid-glass.mp4",
+      "poster": "previews/liquid-glass.jpg",
+      "engine_style": "liquid-glass",
+      "reference": "references/captions/liquid-glass-0488ed63d976.mp4"
+    },
+    {
+      "id": "sunburst",
+      "name": "Sunburst",
+      "tier": "captions",
+      "categories": [
+        "behind",
+        "playful"
+      ],
+      "tagline": "Huge bright yellow words behind you, small script words in front.",
+      "best_for": "Hooky tips, lists, energetic creators",
+      "includes": [
+        "Designed captions",
+        "Retakes removed"
+      ],
+      "preview": "previews/sunburst.mp4",
+      "poster": "previews/sunburst.jpg",
+      "engine_style": "sunburst",
+      "reference": "references/captions/sunburst-0c1bc1ff648a.mp4"
     }
   ]
 }

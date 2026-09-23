@@ -9,7 +9,7 @@
 | Editing skill | `premium-motion-graphics-editor` |
 | Engine style | `swiss-clean` |
 | Best for | Consultants, SaaS founders, clean personal brands |
-| Categories | Business, Creators |
+| Categories | Multiline |
 | Includes | Motion graphics, Real B-roll, Tool screens, Sound design |
 | Website preview | `web/static/previews/swiss-clean.mp4` |
 | Style reference | `references/captions/swiss-1cd8e8fdebb0.mp4` (private - style DNA only, never show publicly) |

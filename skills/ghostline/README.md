@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `ghostline` |
 | Best for | Creators, hot takes, tech and SaaS tips |
-| Categories | Creators, Desi / Hinglish |
+| Categories | Popular, Behind the Person |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/ghostline.mp4` |
 | Style reference | `references/captions/ghostline-d59040b41b8a.mp4` (private - style DNA only, never show publicly) |

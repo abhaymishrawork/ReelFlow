@@ -9,7 +9,7 @@
 | Editing skill | `premium-motion-graphics-editor` |
 | Engine style | `editorial` |
 | Best for | Coaches, experts, personal brands |
-| Categories | Business, Coaches |
+| Categories | Behind the Person |
 | Includes | Motion graphics, Real B-roll, Tool screens, Sound design |
 | Website preview | `web/static/previews/editorial.mp4` |
 | Style reference | none - use the house look for this style |
