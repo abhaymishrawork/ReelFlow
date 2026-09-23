@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `swiss` |
 | Best for | SaaS, tech, design-forward founders |
-| Categories | Business, Creators |
+| Categories | Multiline |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/swiss.mp4` |
 | Style reference | `references/captions/swiss-1cd8e8fdebb0.mp4` (private - style DNA only, never show publicly) |

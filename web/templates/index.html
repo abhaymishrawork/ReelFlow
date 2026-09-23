@@ -4,9 +4,7 @@
 <!-- ============ HERO + UPLOAD ============ -->
 <section class="hero" id="start">
   <div class="wrap">
-    <h1>Your raw video,<br>edited like a <em class="rotate" data-words="premium brand.|pro studio.|top creator.">premium brand.</em></h1>
-    <p class="sub">Upload once. We read your script, understand who it's for, and deliver a finished reel with
-      motion graphics, real B-roll and captions. <b>Not just subtitles.</b></p>
+    <h1>Your raw video,<br>edited like a <em>premium brand.</em></h1>
 
     <form id="order" class="upload-card" method="post" action="{{ url_for('create_order') }}" enctype="multipart/form-data" novalidate>
       <label class="drop" id="drop">
@@ -15,13 +13,13 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
         </span>
         <span class="drop-main" id="dropMain">Drop your video here, or <u>browse</u></span>
-        <span class="drop-hint" id="dropHint">MP4 or MOV · talking-to-camera · {{ cfg.min_video_seconds }} sec to {{ cfg.max_video_minutes }} min · up to {{ cfg.max_upload_mb }} MB</span>
+        <span class="drop-hint" id="dropHint">MP4 or MOV · {{ cfg.min_video_seconds }} sec to {{ cfg.max_video_minutes }} min · up to {{ cfg.max_upload_mb }} MB</span>
       </label>
 
       <div class="card-row">
         <div class="chips">
           <button type="button" class="chip" id="styleChip">
-            <span class="chip-thumb" id="chipThumb"></span><span id="chipText">Pick a style</span>
+            <span class="chip-thumb plain" id="chipThumb">+</span><span id="chipText">Pick a style</span>
           </button>
           <button type="button" class="chip" id="detailsChip">
             <span class="chip-thumb plain">✎</span><span id="detailsText">Add details</span>
@@ -30,14 +28,13 @@
         <button type="button" class="btn btn-gold" id="continueBtn">Continue</button>
       </div>
 
-      <!-- step 2: details (slides open after a file + style are chosen) -->
       <div class="details" id="details" hidden>
         <div class="fields">
           <label><span>Your name</span><input name="name" autocomplete="name" maxlength="120" value="{{ form.name if form else '' }}"></label>
           <label><span>Email for delivery</span><input name="email" type="email" autocomplete="email" maxlength="200" value="{{ form.email if form else '' }}"></label>
         </div>
         <details class="more" id="more">
-          <summary>Add context <span>(optional, we'll work it out from your script)</span></summary>
+          <summary>Add context <span>(optional)</span></summary>
           <div class="fields">
             <label class="wide"><span>Who is this video for?</span>
               <input name="audience" maxlength="600" placeholder="e.g. business owners in India" value="{{ form.audience if form else '' }}"></label>
@@ -52,7 +49,7 @@
         <label class="consent"><input type="checkbox" name="consent" value="1"> I own this video or have permission to edit it, and agree to the
           <a href="{{ url_for('terms') }}" target="_blank">terms</a>.</label>
         <input type="hidden" name="plan" value="{{ plan or 'basic' }}">
-        <input type="hidden" name="tier" id="tierInput" value="{{ tier or 'full' }}">
+        <input type="hidden" name="tier" id="tierInput" value="{{ tier or 'captions' }}">
         {% if plan_name %}<p class="plan-note">Plan: <b>{{ plan_name }}</b> · <a href="{{ url_for('pricing') }}">change</a></p>{% endif %}
         <input type="hidden" name="style" id="styleInput" value="{{ picked if picked in style_ids else '' }}">
         <button class="btn btn-dark btn-lg" type="submit" id="submitBtn">Upload &amp; place order</button>
@@ -60,7 +57,36 @@
       </div>
       <p class="error" id="error" {% if not error %}hidden{% endif %}>{{ error or '' }}</p>
     </form>
-    <p class="trust">✓ Retakes removed &nbsp; ✓ Motion graphics &nbsp; ✓ Audience-matched B-roll &nbsp; ✓ Delivered in 1080×1920</p>
+  </div>
+</section>
+
+<!-- ============ STYLE GALLERY ============ -->
+<section class="gallery" id="styles">
+  <div class="wrap">
+    <div class="gal-bar">
+      <div class="tabs" role="tablist" id="catTabs">
+        {% for c in categories %}<button class="tab" type="button" data-cat="{{ c.id }}" role="tab">{{ c.label }}</button>{% endfor %}
+      </div>
+      <div class="seg" role="tablist" aria-label="Edit type" id="tierToggle">
+        {% for t in tiers|reverse %}<button class="seg-btn" type="button" data-tier="{{ t.id }}" role="tab" title="{{ t.short }}">{{ t.label }}</button>{% endfor %}
+      </div>
+    </div>
+
+    <div class="grid" id="grid">
+      {% for s in caption_styles + styles %}{% if s.show_preview | default(true) %}
+      <article class="tile" tabindex="0" data-tier="{{ s.tier }}" data-cat="{{ s.categories | join(' ') }}" data-id="{{ s.id }}"
+               data-poster="{{ url_for('static', filename=s.poster) }}" aria-label="{{ s.name }}">
+        <div class="tile-media">
+          <video src="{{ url_for('static', filename=s.preview) }}" poster="{{ url_for('static', filename=s.poster) }}" muted loop playsinline preload="none"></video>
+          <span class="picked-badge" aria-hidden="true">✓</span>
+          <button class="expand" type="button" aria-label="Preview {{ s.name }} with sound">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+          </button>
+        </div>
+        <span class="tile-name">{{ s.name }}</span>
+      </article>
+      {% endif %}{% endfor %}
+    </div>
   </div>
 </section>
 
@@ -69,14 +95,12 @@
 <section class="ba" id="before-after">
   <div class="wrap">
     <div class="ba-head">
-      <p class="eyebrow">Before &amp; after</p>
       <h2>Same video. <em>Different league.</em></h2>
-      <p class="sub-sm">Left is exactly what the speaker recorded, retakes included. Right is what we delivered.</p>
     </div>
     <div class="ba-stage">
       <figure class="phone">
         <video id="baBefore" src="{{ url_for('static', filename=ba.before) }}" poster="{{ url_for('static', filename=ba.before_poster) }}" muted playsinline preload="metadata"></video>
-        <figcaption><span class="tag">Before</span> Raw recording</figcaption>
+        <figcaption><span class="tag">Before</span></figcaption>
       </figure>
       <div class="ba-arrow" aria-hidden="true">
         <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
@@ -90,174 +114,18 @@
       <button type="button" class="btn btn-dark" id="baPlay">▶ Play both</button>
       <button type="button" class="btn btn-line" id="baSound">🔇 Hear the after</button>
     </div>
-    <ul class="ba-points">
-      <li><b>Retakes</b> cut out</li><li><b>Headlines</b> behind the speaker</li><li><b>Real logos</b> &amp; graphics</li><li><b>B-roll</b> matched to the audience</li>
-    </ul>
   </div>
 </section>
 {% endif %}
-
-<!-- ============ STYLES ============ -->
-<section class="styles" id="styles">
-  <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <p class="eyebrow">Editing styles</p>
-        <h2>Pick a look. <em>We handle the rest.</em></h2>
-      </div>
-    </div>
-
-    <div class="tier-toggle" role="tablist" aria-label="Editing tier" id="tierToggle">
-      {% for t in tiers %}
-      <button class="tier-btn{% if loop.first %} on{% endif %}" data-tier="{{ t.id }}" type="button" role="tab">
-        <span class="tier-name">{{ t.label }}</span><span class="tier-desc">{{ t.short }}</span>
-      </button>
-      {% endfor %}
-    </div>
-    {% for t in tiers %}<p class="tier-note" data-tier="{{ t.id }}" {% if not loop.first %}hidden{% endif %}>{{ t.tagline }} <span class="tier-rev">{{ t.revision_note }}</span></p>{% endfor %}
-
-    <div class="tabs" role="tablist" id="catTabs">
-      <button class="tab on" data-cat="all" role="tab">All</button>
-      {% for c in categories %}<button class="tab" data-cat="{{ c.id }}" role="tab">{{ c.label }}</button>{% endfor %}
-    </div>
-
-    <div class="grid" id="grid" data-tier="full">
-      {% for s in styles %}
-      {% if s.show_preview | default(true) %}
-      <article class="tile" data-cat="{{ s.categories | join(' ') }}" data-id="{{ s.id }}" data-name="{{ s.name }}"
-               data-poster="{{ url_for('static', filename=s.poster) }}">
-        <div class="tile-media">
-          <video src="{{ url_for('static', filename=s.preview) }}" poster="{{ url_for('static', filename=s.poster) }}" muted loop playsinline preload="none"></video>
-          <button class="mute" type="button" aria-label="Sound on">🔇</button>
-          <span class="picked-badge">Selected</span>
-        </div>
-        <div class="tile-body">
-          <h3>{{ s.name }}</h3>
-          <p>{{ s.tagline }}</p>
-          <p class="for">Best for {{ s.best_for }}</p>
-          <button class="btn btn-line use" type="button">Use this style</button>
-        </div>
-      </article>
-      {% else %}
-      <article class="tile tile-swatch swatch-{{ s.id }}" data-cat="{{ s.categories | join(' ') }}" data-id="{{ s.id }}" data-name="{{ s.name }}" data-poster="">
-        <div class="tile-media swatch-media">
-          <span class="swatch-word">{{ s.name }}</span>
-          <span class="swatch-tag">Preview coming soon</span>
-          <span class="picked-badge">Selected</span>
-        </div>
-        <div class="tile-body">
-          <h3>{{ s.name }}</h3>
-          <p>{{ s.tagline }}</p>
-          <p class="for">Best for {{ s.best_for }}</p>
-          <button class="btn btn-line use" type="button">Use this style</button>
-        </div>
-      </article>
-      {% endif %}
-      {% endfor %}
-      <article class="tile soon" data-cat="all">
-        <div class="tile-media soon-media"><span>More styles<br><em>coming soon</em></span></div>
-        <div class="tile-body"><h3>New looks every month</h3><p>Each one with motion graphics and B-roll, not just captions.</p></div>
-      </article>
-    </div>
-
-    <div class="grid" id="gridCaptions" data-tier="captions" hidden>
-      {% for s in caption_styles %}
-      <article class="tile" data-cat="{{ s.categories | join(' ') }}" data-id="{{ s.id }}" data-name="{{ s.name }}"
-               data-poster="{{ url_for('static', filename=s.poster) }}">
-        <div class="tile-media">
-          <video src="{{ url_for('static', filename=s.preview) }}" poster="{{ url_for('static', filename=s.poster) }}" muted loop playsinline preload="none"></video>
-          <button class="mute" type="button" aria-label="Sound on">🔇</button>
-          <span class="picked-badge">Selected</span>
-        </div>
-        <div class="tile-body">
-          <h3>{{ s.name }}</h3>
-          <p>{{ s.tagline }}</p>
-          <p class="for">Best for {{ s.best_for }}</p>
-          <button class="btn btn-line use" type="button">Use this style</button>
-        </div>
-      </article>
-      {% endfor %}
-      <article class="tile soon" data-cat="all">
-        <div class="tile-media soon-media"><span>More caption looks<br><em>coming soon</em></span></div>
-        <div class="tile-body"><h3>New looks every month</h3><p>Same idea, no B-roll or motion graphics — just designed captions.</p></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HOW ============ -->
-<section class="how" id="how">
-  <div class="ticker" aria-hidden="true"><div class="ticker-track">
-    <span>UPLOAD · UNDERSTAND · EDIT · DELIVER · UPLOAD · UNDERSTAND · EDIT · DELIVER · UPLOAD · UNDERSTAND · EDIT · DELIVER ·</span>
-    <span>UPLOAD · UNDERSTAND · EDIT · DELIVER · UPLOAD · UNDERSTAND · EDIT · DELIVER · UPLOAD · UNDERSTAND · EDIT · DELIVER ·</span>
-  </div></div>
-  <div class="wrap">
-    <p class="eyebrow">How it works</p>
-    <h2>One raw clip. <em>Either way you go.</em></h2>
-    <p class="sub-sm" style="margin-bottom:0">Four steps, whichever tier you pick — only step three changes.</p>
-    <p class="more-link"><a href="{{ url_for('how') }}">See the full process →</a> &nbsp; <a href="{{ url_for('pricing') }}">See pricing →</a></p>
-    <div class="steps steps-4">
-      <div class="step">
-        <div class="step-top">
-          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg></span>
-          <span class="step-no">01</span>
-        </div>
-        <h3>Upload</h3><p>Send your raw talking video, pick Captions Only or Full Edit, then a style. Mistakes and retakes are fine.</p>
-      </div>
-      <div class="step">
-        <div class="step-top">
-          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><path d="M20 20l-5.5-5.5"/></svg></span>
-          <span class="step-no">02</span>
-        </div>
-        <h3>We read it</h3><p>We work out who it's for and what matters from your own script first — your brief only refines it.</p>
-      </div>
-      <div class="step split-step">
-        <div class="step-top">
-          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><path d="M8.3 8.3L19 19M19 5L8.3 15.7"/></svg></span>
-          <span class="step-no">03</span>
-        </div>
-        <h3>We edit</h3>
-        <p class="split-lines"><b>Captions Only</b> — retakes out, captions designed in your style.<br>
-          <b>Full Edit</b> — same, plus real B-roll, motion graphics and tool screens cut in.</p>
-      </div>
-      <div class="step">
-        <div class="step-top">
-          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6 10l6 6 6-6M4 20h16"/></svg></span>
-          <span class="step-no">04</span>
-        </div>
-        <h3>Download</h3><p>Your finished vertical reel lands on your order page, ready to post.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ EARLY DAYS ============ -->
-<section class="early">
-  <div class="wrap early-in">
-    <div>
-      <p class="eyebrow">Reviews</p>
-      <h2>We're brand new. <em>Be one of our first.</em></h2>
-      <p class="sub-sm" style="margin:12px 0 0;max-width:520px">
-        No reviews to show you yet — {{ cfg.site_name }} just opened. Real client quotes will replace this the moment
-        the first reels go out. Early orders get the closest attention, because right now every one of them is a first impression.
-      </p>
-    </div>
-    <ul class="early-points">
-      <li><b>First orders</b> reviewed personally before delivery</li>
-      <li><b>1 free revision</b> on every plan while we're new</li>
-      <li><b>Direct line</b> to the person editing your reel — <a href="mailto:{{ cfg.contact_email }}">{{ cfg.contact_email }}</a></li>
-    </ul>
-  </div>
-</section>
 
 <!-- ============ FAQ ============ -->
 <section class="faq" id="faq">
   <div class="wrap narrow">
     <h2>Questions</h2>
-    <details><summary>What kind of video should I upload?</summary><p>A talking-to-camera video: advice, a lesson, a product explanation or a story. Vertical or horizontal both work.</p></details>
-    <details><summary>Do I need to write a brief?</summary><p>No. We work out the audience and message from what you say. Add context only if you want something specific.</p></details>
-    <details><summary>How long does it take?</summary><p>Most reels are delivered within 24 hours. Your order page updates automatically.</p></details>
-    <details><summary>What happens to my video?</summary><p>It is used only to edit your reel and is deleted 7 days after delivery.</p></details>
+    <details><summary>What kind of video should I upload?</summary><p>A talking-to-camera video. Vertical or horizontal both work.</p></details>
+    <details><summary>How long does it take?</summary><p>Most reels are delivered within 24 hours. We email you when it is ready.</p></details>
+    <details><summary>Captions only or full edit?</summary><p>Captions only: retakes removed and designed captions. Full edit adds real B-roll and motion graphics.</p></details>
+    <details><summary>What happens to my video?</summary><p>It is used only to edit your reel and is deleted {{ cfg.retention_days }} days after delivery.</p></details>
   </div>
 </section>
 
@@ -267,10 +135,7 @@
     <button class="close" type="button" aria-label="Close">×</button>
     <video id="modalVideo" playsinline loop controls></video>
     <div class="modal-side">
-      <p class="eyebrow">Style preview</p>
       <h3 id="modalName"></h3>
-      <p id="modalTag"></p>
-      <ul class="incl" id="modalIncl"></ul>
       <button class="btn btn-gold btn-lg" type="button" id="modalUse">Use this style</button>
     </div>
   </div>
@@ -286,21 +151,22 @@
   const details = $('#details'), err = $('#error');
   const showErr = m => { err.textContent = m; err.hidden = !m; };
 
-  // tier toggle: full edit (B-roll + motion graphics) vs captions only
-  const grids = { full: $('#grid'), captions: $('#gridCaptions') };
-  const tierBtns = $$('.tier-btn'), tierNotes = $$('.tier-note');
-  const switchTier = tid => {
-    if (!grids[tid]) return;
-    tierBtns.forEach(b => b.classList.toggle('on', b.dataset.tier === tid));
-    Object.entries(grids).forEach(([k, g]) => { g.hidden = k !== tid; });
-    tierNotes.forEach(n => { n.hidden = n.dataset.tier !== tid; });
-    tierIn.value = tid;
+  // tier (Captions only / Full edit) + category filter: one grid, hide categories with no styles
+  const tiles = $$('.tile'), tabs = $$('.tab'), segs = $$('.seg-btn');
+  let curTier = tierIn.value === 'full' ? 'full' : 'captions', curCat = null;
+  const inCat = (t, c) => t.dataset.cat.split(' ').includes(c);
+  const render = () => {
+    const tierTiles = tiles.filter(t => t.dataset.tier === curTier);
+    tabs.forEach(b => { b.hidden = !tierTiles.some(t => inCat(t, b.dataset.cat)); });
+    const cur = tabs.find(b => b.dataset.cat === curCat);
+    if (!cur || cur.hidden) { const first = tabs.find(b => !b.hidden); curCat = first ? first.dataset.cat : null; }
+    tabs.forEach(b => b.classList.toggle('on', b.dataset.cat === curCat));
+    segs.forEach(b => b.classList.toggle('on', b.dataset.tier === curTier));
+    tiles.forEach(t => { t.hidden = !(t.dataset.tier === curTier && inCat(t, curCat)); });
   };
-  tierBtns.forEach(b => b.addEventListener('click', () => switchTier(b.dataset.tier)));
-
-  // rotating hero word
-  const rot = $('.rotate'), words = rot.dataset.words.split('|'); let wi = 0;
-  setInterval(() => { rot.classList.add('out'); setTimeout(() => { wi = (wi + 1) % words.length; rot.textContent = words[wi]; rot.classList.remove('out'); }, 350); }, 2600);
+  const switchTier = tid => { if (tid !== 'full' && tid !== 'captions') return; curTier = tid; tierIn.value = tid; render(); };
+  segs.forEach(b => b.addEventListener('click', () => switchTier(b.dataset.tier)));
+  tabs.forEach(b => b.addEventListener('click', () => { curCat = b.dataset.cat; render(); }));
 
   // file pick + drag and drop
   const MIN_S = {{ cfg.min_video_seconds }}, MAX_S = {{ cfg.max_video_minutes }} * 60, MAX_MB = {{ cfg.max_upload_mb }};
@@ -344,17 +210,18 @@
   const choose = id => {
     const s = byId[id]; if (!s) return;
     styleIn.value = id;
-    switchTier(s.tier);
+    if (s.tier !== curTier) switchTier(s.tier);
+    const t = tiles.find(x => x.dataset.id === id);
+    if (t && t.hidden) { curCat = t.dataset.cat.split(' ')[0]; render(); }
     $('#chipText').textContent = s.name;
-    const poster = document.querySelector(`.tile[data-id="${id}"]`).dataset.poster;
-    $('#chipThumb').style.backgroundImage = poster ? `url('${poster}')` : 'none';
-    $('#chipThumb').classList.toggle('plain', !poster);
-    $('#chipThumb').textContent = poster ? '' : s.name.charAt(0);
+    $('#chipThumb').style.backgroundImage = t ? `url('${t.dataset.poster}')` : 'none';
+    $('#chipThumb').textContent = '';
+    $('#chipThumb').classList.remove('plain');
     $('#styleChip').classList.add('set');
-    $$('.tile').forEach(t => t.classList.toggle('picked', t.dataset.id === id));
+    tiles.forEach(x => x.classList.toggle('picked', x.dataset.id === id));
     showErr('');
   };
-  switchTier(styleIn.value && byId[styleIn.value] ? byId[styleIn.value].tier : (tierIn.value === 'captions' ? 'captions' : 'full'));
+  render();
   if (styleIn.value) choose(styleIn.value);
   $('#styleChip').addEventListener('click', () => $('#styles').scrollIntoView({behavior: 'smooth'}));
   const ctx = () => [...form.querySelectorAll('[name=audience],[name=goal],[name=notes]')];
@@ -383,35 +250,27 @@
     new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && aa.paused && aa.currentTime === 0) playBoth(); }), {threshold: .5}).observe(aa);
   }
 
-  // tiles: autoplay when visible, tabs, preview modal
+  // tiles: autoplay when visible, click to pick, expand for a preview with sound
   const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; e.isIntersecting ? v.play().catch(() => {}) : v.pause(); }), {threshold: .35});
   $$('.tile video').forEach(v => { v.preload = 'metadata'; io.observe(v); });
-  $$('.mute').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); const v = b.parentElement.querySelector('video'); v.muted = !v.muted; b.textContent = v.muted ? '🔇' : '🔊'; }));
-  $$('.tab').forEach(t => t.addEventListener('click', () => {
-    $$('.tab').forEach(x => x.classList.toggle('on', x === t));
-    $$('.tile').forEach(x => x.hidden = !(t.dataset.cat === 'all' || x.dataset.cat === 'all' || x.dataset.cat.split(' ').includes(t.dataset.cat)));
-  }));
   const modal = $('#modal'), mv = $('#modalVideo'); let mid = null;
   const openModal = id => {
-    const s = byId[id]; mid = id;
-    mv.src = document.querySelector(`.tile[data-id="${id}"] video`).getAttribute('src'); mv.muted = false; mv.play().catch(() => { mv.muted = true; mv.play(); });
-    $('#modalName').textContent = s.name; $('#modalTag').textContent = s.tagline;
-    $('#modalIncl').innerHTML = s.includes.map(i => `<li>${i}</li>`).join('');
+    mid = id;
+    mv.src = tiles.find(t => t.dataset.id === id).querySelector('video').getAttribute('src');
+    mv.muted = false; mv.play().catch(() => { mv.muted = true; mv.play(); });
+    $('#modalName').textContent = byId[id].name;
     modal.hidden = false; document.body.style.overflow = 'hidden';
   };
   const closeModal = () => { modal.hidden = true; mv.pause(); document.body.style.overflow = ''; };
-  $$('.tile:not(.soon)').forEach(t => {
-    if (t.classList.contains('tile-swatch')) {
-      t.querySelector('.tile-media').addEventListener('click', () => { choose(t.dataset.id); goStart(); });
-    } else {
-      t.querySelector('.tile-media').addEventListener('click', () => openModal(t.dataset.id));
-    }
-    t.querySelector('.use').addEventListener('click', () => { choose(t.dataset.id); goStart(); });
+  const pick = id => { choose(id); if (fileIn.files[0] && fileOk) { $('#start').scrollIntoView({behavior: 'smooth'}); openDetails(); } };
+  tiles.forEach(t => {
+    t.addEventListener('click', () => pick(t.dataset.id));
+    t.addEventListener('keydown', ev => { if (ev.target === t && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); pick(t.dataset.id); } });
+    t.querySelector('.expand').addEventListener('click', ev => { ev.stopPropagation(); openModal(t.dataset.id); });
   });
   modal.addEventListener('click', ev => { if (ev.target === modal || ev.target.classList.contains('close')) closeModal(); });
   document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && !modal.hidden) closeModal(); });
-  $('#modalUse').addEventListener('click', () => { choose(mid); closeModal(); goStart(); });
-  function goStart() { $('#start').scrollIntoView({behavior: 'smooth'}); if (fileIn.files[0]) openDetails(); }
+  $('#modalUse').addEventListener('click', () => { closeModal(); pick(mid); });
 
   // continue -> details
   function openDetails() { details.hidden = false; $('#continueBtn').hidden = true; setTimeout(() => form.querySelector('[name=name]').focus({preventScroll: true}), 50); }

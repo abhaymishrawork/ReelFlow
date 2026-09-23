@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `magenta-estate` |
 | Best for | Creators, hot takes, Hinglish content |
-| Categories | Creators, Desi / Hinglish |
+| Categories | Popular, Real Estate |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/magenta-estate.mp4` |
 | Style reference | `references/captions/magenta-estate-1d24545a29a4.mp4` (private - style DNA only, never show publicly) |

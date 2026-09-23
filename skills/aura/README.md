@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `aura` |
 | Best for | Coaches, wellness and personal-brand creators |
-| Categories | Coaches, Creators |
+| Categories | Behind the Person |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/aura.mp4` |
 | Style reference | `references/captions/aura-d5ea66c7df9a.mp4` (private - style DNA only, never show publicly) |

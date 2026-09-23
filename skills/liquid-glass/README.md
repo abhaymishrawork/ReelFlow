@@ -1,18 +1,18 @@
-# Monument
+# Liquid Glass
 
-> Bold, structured all-caps captions with a confident, corporate feel.
+> Soft frosted-glass caption pill, clean and native to social feeds.
 
 | | |
 |---|---|
-| Style id (what the order stores) | `monument` |
+| Style id (what the order stores) | `liquid-glass` |
 | Tier | Captions Only |
 | Editing skill | `embedded-captions` |
-| Engine style | `monument` |
-| Best for | Founders, B2B, LinkedIn-style talking heads |
-| Categories | Behind the Person |
+| Engine style | `liquid-glass` |
+| Best for | Everyday creators, lifestyle, UGC |
+| Categories | Social |
 | Includes | Designed captions, Retakes removed |
-| Website preview | `web/static/previews/monument.mp4` |
-| Style reference | `references/captions/monument-93d4490cf93f.mp4` (private - style DNA only, never show publicly) |
+| Website preview | `web/static/previews/liquid-glass.mp4` |
+| Style reference | `references/captions/liquid-glass-0488ed63d976.mp4` (private - style DNA only, never show publicly) |
 
 ## How to edit an order in this style
 

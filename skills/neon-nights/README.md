@@ -9,7 +9,7 @@
 | Editing skill | `premium-motion-graphics-editor` |
 | Engine style | `neon-nights` |
 | Best for | Nightlife, fitness, Gen-Z creators |
-| Categories | Creators, Desi / Hinglish |
+| Categories | Behind the Person |
 | Includes | Motion graphics, Real B-roll, Tool screens, Sound design |
 | Website preview | `web/static/previews/neon-nights.mp4` |
 | Style reference | `references/captions/ghostline-d59040b41b8a.mp4` (private - style DNA only, never show publicly) |

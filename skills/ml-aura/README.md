@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `ml-aura` |
 | Best for | Founders, consultants, calm premium brands |
-| Categories | Business, Coaches |
+| Categories | Popular, Multiline, Editorial |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/ml-aura.mp4` |
 | Style reference | `references/captions/ml-aura-23172edea0d0.mp4` (private - style DNA only, never show publicly) |

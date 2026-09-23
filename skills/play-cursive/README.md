@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `play-cursive` |
 | Best for | Lifestyle and everyday creators, Hinglish content |
-| Categories | Creators, Desi / Hinglish |
+| Categories | Playful |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/play-cursive.mp4` |
 | Style reference | `references/captions/play-cursive-7b0f1af78598.mp4` (private - style DNA only, never show publicly) |

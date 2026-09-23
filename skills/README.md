@@ -37,6 +37,9 @@ Two tiers:
 | [Monument](monument/README.md) | `monument` | Founders, B2B, LinkedIn-style talking heads | Bold, structured all-caps captions with a confident, corporate feel. |
 | [Playful Cursive](play-cursive/README.md) | `play-cursive` | Lifestyle and everyday creators, Hinglish content | Bouncy handwritten-cursive key words with a fun, casual energy. |
 | [Swiss](swiss/README.md) | `swiss` | SaaS, tech, design-forward founders | Clean grid-based sans-serif captions, minimal and precise. |
+| [Storyline](dyn-storyline/README.md) | `dyn-storyline` | Storytellers, coaches, personal brands | Big serif key words that flow line by line with the story. |
+| [Liquid Glass](liquid-glass/README.md) | `liquid-glass` | Everyday creators, lifestyle, UGC | Soft frosted-glass caption pill, clean and native to social feeds. |
+| [Sunburst](sunburst/README.md) | `sunburst` | Hooky tips, lists, energetic creators | Huge bright yellow words behind you, small script words in front. |
 
 ## Finding an order's style
 

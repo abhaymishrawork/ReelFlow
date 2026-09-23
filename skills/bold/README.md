@@ -9,7 +9,7 @@
 | Editing skill | `premium-motion-graphics-editor` |
 | Engine style | `bold` |
 | Best for | Creators, educators, tech and SaaS tips |
-| Categories | Creators, Coaches |
+| Categories | Dynamic, Editorial |
 | Includes | Motion graphics, Real B-roll, Tool screens, Sound design |
 | Website preview | `web/static/previews/bold.mp4` |
 | Style reference | none - use the house look for this style |

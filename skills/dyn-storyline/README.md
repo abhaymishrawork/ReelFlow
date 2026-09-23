@@ -1,18 +1,18 @@
-# Monument
+# Storyline
 
-> Bold, structured all-caps captions with a confident, corporate feel.
+> Big serif key words that flow line by line with the story.
 
 | | |
 |---|---|
-| Style id (what the order stores) | `monument` |
+| Style id (what the order stores) | `dyn-storyline` |
 | Tier | Captions Only |
 | Editing skill | `embedded-captions` |
-| Engine style | `monument` |
-| Best for | Founders, B2B, LinkedIn-style talking heads |
-| Categories | Behind the Person |
+| Engine style | `dyn-storyline` |
+| Best for | Storytellers, coaches, personal brands |
+| Categories | Popular, Dynamic, Editorial |
 | Includes | Designed captions, Retakes removed |
-| Website preview | `web/static/previews/monument.mp4` |
-| Style reference | `references/captions/monument-93d4490cf93f.mp4` (private - style DNA only, never show publicly) |
+| Website preview | `web/static/previews/dyn-storyline.mp4` |
+| Style reference | `references/captions/dyn-storyline-b96e908d95a0.mp4` (private - style DNA only, never show publicly) |
 
 ## How to edit an order in this style
 

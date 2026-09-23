@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `dyn-linen` |
 | Best for | Founders, consultants, premium personal brands |
-| Categories | Business, Coaches |
+| Categories | Dynamic |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/dyn-linen.mp4` |
 | Style reference | `references/captions/dyn-linen-c7b84c695694.mp4` (private - style DNA only, never show publicly) |

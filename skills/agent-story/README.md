@@ -9,7 +9,7 @@
 | Editing skill | `embedded-captions` |
 | Engine style | `agent-story` |
 | Best for | Story-driven talking heads, case studies |
-| Categories | Business, Creators |
+| Categories | Popular, Real Estate |
 | Includes | Designed captions, Retakes removed |
 | Website preview | `web/static/previews/agent-story.mp4` |
 | Style reference | `references/captions/agent-story-3df3c7198220.mp4` (private - style DNA only, never show publicly) |
