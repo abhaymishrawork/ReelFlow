@@ -4,7 +4,7 @@
 <!-- ============ HERO + UPLOAD ============ -->
 <section class="hero" id="start">
   <div class="wrap">
-    <h1>Your raw video,<br>edited like a <em>premium brand.</em></h1>
+    <h1>Your raw video,<br>edited like a <em class="rotate" data-words="premium brand.|pro studio.|top creator.">premium brand.</em></h1>
 
     <form id="order" class="upload-card" method="post" action="{{ url_for('create_order') }}" enctype="multipart/form-data" novalidate>
       <label class="drop" id="drop">
@@ -205,6 +205,10 @@
   ['dragenter', 'dragover'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('over'); }));
   ['dragleave', 'drop'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('over'); }));
   drop.addEventListener('drop', ev => { if (ev.dataTransfer.files[0]) { fileIn.files = ev.dataTransfer.files; setFile(fileIn.files[0]); } });
+
+  // rotating hero word
+  const rot = $('.rotate'), words = rot.dataset.words.split('|'); let wi = 0;
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => { rot.classList.add('out'); setTimeout(() => { wi = (wi + 1) % words.length; rot.textContent = words[wi]; rot.classList.remove('out'); }, 350); }, 2600);
 
   // style selection
   const choose = id => {
