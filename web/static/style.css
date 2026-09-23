@@ -345,3 +345,31 @@ h2.light em { color: var(--gold-hi); }
 @media (max-width: 600px) {
   .tier-toggle { grid-template-columns: 1fr; }
 }
+
+/* my orders */
+.notice-warn { background: #fbf0e4; border-color: #ecd3b1; color: #7a4a12; }
+.acct-who { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.inline-form { display: inline; margin: 0; }
+.linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--gold-lo); text-decoration: underline; cursor: pointer; }
+.order-list { list-style: none; margin: 28px 0 12px; padding: 0; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); }
+.order-row { display: flex; align-items: center; gap: 14px; padding: 16px 20px; }
+.order-row + .order-row { border-top: 1px solid var(--line); }
+.order-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.order-name { font-weight: 600; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.order-name:hover { text-decoration: underline; }
+.order-meta { font-size: 13px; color: var(--muted); }
+.pill { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--ivory); color: var(--ink2); white-space: nowrap; }
+.pill-done { background: #eef6ea; color: #2f6b2a; }
+.pill-editing { background: #fbf3df; color: var(--gold-lo); }
+.pill-failed { background: #fbe9e6; color: #9a3322; }
+.fineprint { font-size: 13px; color: var(--muted); }
+.empty { margin: 28px 0; color: var(--ink2); }
+.acct-form { margin-top: 36px; display: flex; flex-direction: column; gap: 8px; }
+.acct-form label { font-size: 13px; font-weight: 600; color: var(--ink2); }
+.acct-row { display: flex; gap: 10px; }
+.acct-row .btn { white-space: nowrap; }
+@media (max-width: 600px) {
+  .order-row { flex-wrap: wrap; }
+  .order-main { flex-basis: 100%; }
+  .acct-row { flex-direction: column; }
+}

@@ -72,6 +72,9 @@ class LocalQueue:
                     out.append(o)
         return sorted(out, key=lambda o: o["created"])
 
+    def by_email(self, email):
+        return [o for o in self.list() if o["customer"]["email"].lower() == email.lower()][::-1]
+
 
 class SupabaseQueue:
     """Orders in a Supabase Postgres table (one `data` jsonb column per row) so the live Vercel site
@@ -122,6 +125,12 @@ class SupabaseQueue:
         if status:
             params["status"] = "eq." + status
         r = requests.get(self.url, headers=self.headers, params=params, timeout=20)
+        r.raise_for_status()
+        return [row["data"] for row in r.json()]
+
+    def by_email(self, email):
+        r = requests.get(self.url, headers=self.headers, timeout=20,
+                         params={"select": "data", "order": "created.desc", "data->customer->>email": "ilike." + email.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")})
         r.raise_for_status()
         return [row["data"] for row in r.json()]
 

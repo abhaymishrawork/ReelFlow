@@ -3,6 +3,9 @@
     { "src": "web/app.py", "use": "@vercel/python" },
     { "src": "api/blob-upload-token.js", "use": "@vercel/node" }
   ],
+  "crons": [
+    { "path": "/api/cron/cleanup", "schedule": "0 3 * * *" }
+  ],
   "routes": [
     { "src": "/api/blob-upload-token", "dest": "api/blob-upload-token.js" },
     { "src": "/(.*)", "dest": "web/app.py" }

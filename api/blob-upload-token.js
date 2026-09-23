@@ -13,7 +13,7 @@ module.exports = async (request, response) => {
       onBeforeGenerateToken: async () => ({
         allowedContentTypes: ['video/mp4', 'video/quicktime', 'video/x-m4v', 'video/x-matroska', 'video/webm'],
         addRandomSuffix: true,
-        maximumSizeInBytes: 2000 * 1024 * 1024, // matches config.json max_upload_mb
+        maximumSizeInBytes: 500 * 1024 * 1024, // matches config.json max_upload_mb
       }),
       onUploadCompleted: async ({ blob }) => {
         console.log('reelflow: video uploaded to blob', blob.url);

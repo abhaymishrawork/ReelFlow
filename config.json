@@ -5,7 +5,8 @@
   "host": "127.0.0.1",
   "port": 8765,
   "public_url": "http://localhost:8765",
-  "max_upload_mb": 2000,
+  "max_upload_mb": 500,
+  "retention_days": 7,
   "min_video_seconds": 10,
   "max_video_minutes": 5,
   "allowed_ext": [".mp4", ".mov", ".m4v", ".mkv", ".webm"],
@@ -18,7 +19,7 @@
                "blob": { "token": "env:BLOB_READ_WRITE_TOKEN" } },
 
   "notify": {
-    "providers": ["desktop", "log"],
+    "providers": ["desktop", "log", "email"],
     "ntfy_topic": "env:REELFLOW_NTFY_TOPIC",
     "telegram_bot_token": "env:REELFLOW_TELEGRAM_TOKEN",
     "telegram_chat_id": "env:REELFLOW_TELEGRAM_CHAT",

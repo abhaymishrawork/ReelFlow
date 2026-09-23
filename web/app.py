@@ -2,11 +2,13 @@
 
   python web/app.py            (or start_website.bat)  -> http://localhost:8765
 """
-import json, os, shutil, subprocess, sys
+import hashlib, hmac, json, os, shutil, subprocess, sys
+from datetime import timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from flask import Flask, abort, redirect, render_template, request, send_file, url_for
-from core import config, jobs, notify, storage
+from flask import Flask, abort, jsonify, redirect, render_template, request, send_file, session, url_for
+from itsdangerous import BadSignature, URLSafeTimedSerializer
+from core import config, jobs, notify, retention, storage
 
 CFG = config.load()
 Q, S = jobs.get(CFG), storage.get(CFG)
@@ -18,6 +20,13 @@ TIER_IDS = {t["id"] for t in CFG["tiers"]}
 HERE = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, template_folder=os.path.join(HERE, "templates"), static_folder=os.path.join(HERE, "static"))
 app.config["MAX_CONTENT_LENGTH"] = CFG["max_upload_mb"] * 1024 * 1024
+# Signs the "my orders" cookie and email login links. Derived from a server-only secret so no extra env var is needed.
+_seed = os.environ.get("REELFLOW_SECRET_KEY") or CFG["queue"].get("supabase", {}).get("service_key") or "reelflow-local-dev"
+app.secret_key = hashlib.sha256(("reelflow-session:" + _seed).encode()).hexdigest()
+app.permanent_session_lifetime = timedelta(days=180)
+app.config.update(SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE="Lax", SESSION_COOKIE_SECURE=bool(os.environ.get("VERCEL")))
+LOGIN = URLSafeTimedSerializer(app.secret_key, salt="account-login")
+LOGIN_MAX_AGE = 3600
 
 STATUS_TEXT = {
     "new": ("Received", "Your video is in the queue. Editing usually starts within a few hours."),
@@ -145,11 +154,21 @@ def create_order():
     notify.owner("New reel order", "%s | %s (%s) | %s MB" % (oid, style_name, order["tier"], order["video"]["size_mb"]), CFG)
     if CFG["notify"].get("email_customer_on_order"):
         link = url_for("order_page", oid=oid, _external=True)
-        notify.send_email(CFG, email, "We received your video",
-                          "Hi %s,\n\nWe received your video and you picked the \"%s\" style. "
-                          "We're starting your edit now and will email you when it's ready - usually within 24 hours.\n\n"
-                          "Track your order any time here:\n%s\n\nThanks!\n%s"
-                          % (clean(request.form.get("name"), 120) or "there", style_name, link, CFG["site_name"]))
+        try:
+            sent = notify.send_email(CFG, email, "We received your video",
+                                     "Hi %s,\n\nWe received your video and you picked the \"%s\" style. "
+                                     "We're starting your edit now and will email you the finished reel shortly - "
+                                     "usually within 24 hours.\n\nTrack your order any time here:\n%s\n\n"
+                                     "See all your orders:\n%s\n\nThanks!\n%s"
+                                     % (clean(request.form.get("name"), 120) or "there", style_name, link,
+                                        url_for("account", _external=True), CFG["site_name"]))
+        except Exception as e:  # noqa: BLE001 - the order is already saved; a mail failure must not show an error page
+            sent = False
+            print("reelflow: confirmation email to order %s failed: %r" % (oid, e))
+        if not sent:
+            notify.owner("Confirmation email NOT sent", "%s - reply to the customer manually" % oid, CFG)
+    session.permanent = True
+    session["orders"] = (session.get("orders", []) + [oid])[-50:]
     return redirect(url_for("order_page", oid=oid, new=1))
 
 
@@ -160,10 +179,72 @@ def order_page(oid):
         abort(404)
     label, text = STATUS_TEXT[o["status"]]
     out = o.get("output")
-    link = S.output_url(oid, out["key"]) if o["status"] == "done" and out else None
+    link = S.output_url(oid, out["key"]) if o["status"] == "done" and out and not o.get("purged") else None
+    if o.get("purged"):
+        text = "This order's video files were deleted %d days after delivery, as promised." % CFG["retention_days"]
     style = STYLE_BY_ID.get(o["style"])
     return render_template("order.html", cfg=CFG, o=o, label=label, text=text, link=link, style=style,
                            is_new=request.args.get("new"))
+
+
+def _card(o):
+    label, _ = STATUS_TEXT[o["status"]]
+    out = o.get("output")
+    link = S.output_url(o["id"], out["key"]) if o["status"] == "done" and out and not o.get("purged") else None
+    style = STYLE_BY_ID.get(o["style"])
+    return {"o": o, "label": label, "link": link, "style": style["name"] if style else o["style"]}
+
+
+@app.route("/account", methods=["GET", "POST"])
+def account():
+    sent_to = None
+    if request.method == "POST":
+        email = clean(request.form.get("email"), 200).lower()
+        if "@" in email and "." in email.split("@")[-1]:
+            link = url_for("account_login", token=LOGIN.dumps(email), _external=True)
+            try:
+                notify.send_email(CFG, email, "Your %s orders" % CFG["site_name"],
+                                  "Open this link to see all your orders (valid for 1 hour):\n%s\n\n"
+                                  "If you didn't ask for this, ignore this email.\n%s" % (link, CFG["site_name"]))
+            except Exception as e:  # noqa: BLE001
+                print("reelflow: login email failed: %r" % e)
+            sent_to = email  # same message whether or not orders exist, so emails can't be probed
+    email = session.get("email")
+    if email:
+        orders = Q.by_email(email)
+    else:
+        orders = [o for o in (Q.get(i) for i in reversed(session.get("orders", []))) if o]
+    return render_template("account.html", cfg=CFG, cards=[_card(o) for o in orders], email=email, sent_to=sent_to,
+                           retention_days=CFG["retention_days"])
+
+
+@app.get("/account/login/<token>")
+def account_login(token):
+    try:
+        email = LOGIN.loads(token, max_age=LOGIN_MAX_AGE)
+    except BadSignature:
+        return render_template("account.html", cfg=CFG, cards=[], email=None, sent_to=None, expired=True,
+                               retention_days=CFG["retention_days"]), 400
+    session.permanent = True
+    session["email"] = email
+    return redirect(url_for("account"))
+
+
+@app.post("/account/logout")
+def account_logout():
+    session.clear()
+    return redirect(url_for("account"))
+
+
+@app.get("/api/cron/cleanup")
+def cron_cleanup():
+    # Vercel Cron calls this daily (vercel.json). With CRON_SECRET set, Vercel sends it as a Bearer token.
+    secret = os.environ.get("CRON_SECRET")
+    if secret and not hmac.compare_digest(request.headers.get("Authorization", ""), "Bearer " + secret):
+        abort(401)
+    lines = []
+    n = retention.purge_old(Q, S, CFG["retention_days"], log=lines.append)
+    return jsonify(purged=n, log=lines)
 
 
 @app.get("/download/<oid>/<key>")

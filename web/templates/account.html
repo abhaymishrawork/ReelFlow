@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}My orders · {{ cfg.site_name }}{% endblock %}
+{% block body %}
+<main class="status">
+  <div class="wrap narrow">
+    <p class="eyebrow">Your account</p>
+    <h1 class="st-title">My orders</h1>
+    {% if expired %}<p class="notice notice-warn">That sign-in link has expired or is invalid. Ask for a new one below.</p>{% endif %}
+    {% if sent_to %}<p class="notice">If <b>{{ sent_to }}</b> has orders with us, a sign-in link is on its way. It works for 1 hour.</p>{% endif %}
+
+    {% if email %}
+      <div class="sub acct-who">Signed in as <b>{{ email }}</b>.
+        <form method="post" action="{{ url_for('account_logout') }}" class="inline-form"><button class="linkish" type="submit">Sign out</button></form></div>
+    {% else %}
+      <p class="sub">Orders placed in this browser show below. To see every order from any device, get a sign-in link by email.</p>
+    {% endif %}
+
+    {% if cards %}
+      <ul class="order-list">
+        {% for c in cards %}
+        <li class="order-row">
+          <div class="order-main">
+            <a class="order-name" href="{{ url_for('order_page', oid=c.o.id) }}">{{ c.o.video.original_name }}</a>
+            <span class="order-meta">{{ c.style }} · {{ 'Captions only' if c.o.get('tier') == 'captions' else 'Full edit' }} · {{ c.o.created[:10] }}</span>
+          </div>
+          <span class="pill pill-{{ c.o.status }}">{{ 'Files deleted' if c.o.get('purged') else c.label }}</span>
+          {% if c.link %}<a class="btn btn-gold btn-sm" href="{{ c.link }}">Download</a>
+          {% else %}<a class="btn btn-line btn-sm" href="{{ url_for('order_page', oid=c.o.id) }}">View</a>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      <p class="fineprint">Finished reels stay downloadable for {{ retention_days }} days after delivery, then the video files are deleted. Download and save yours.</p>
+    {% else %}
+      <p class="empty">No orders here yet. <a href="{{ url_for('home') }}#start">Upload your first video</a>.</p>
+    {% endif %}
+
+    {% if not email %}
+    <form method="post" action="{{ url_for('account') }}" class="acct-form">
+      <label for="acctEmail">Email you ordered with</label>
+      <div class="acct-row">
+        <input id="acctEmail" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+        <button class="btn btn-dark" type="submit">Email me a sign-in link</button>
+      </div>
+    </form>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

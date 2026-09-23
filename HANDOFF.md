@@ -272,3 +272,28 @@ persistent system change).
 Git integration is disconnected in the Cloudflare dashboard (Workers & Pages -> reelflow -> Settings -> Build) -
 Workers were ruled out for this Flask app (no persistent filesystem/ffmpeg). Harmless to leave failing, but worth
 cleaning up.
+
+## 2026-09-23: Customer emails, My orders, auto-delete, style docs
+
+**Why yesterday's customer got no email:** the live site sends the confirmation email from Vercel, and Vercel had
+no `REELFLOW_RESEND_API_KEY` env var, so `send_email` silently returned False. Second blocker: the sender is
+`onboarding@resend.dev` (Resend's sandbox), which only delivers to the Resend account owner's own address.
+Customer emails need (1) the key added in Vercel -> Settings -> Environment Variables (Production + Preview), and
+(2) a verified sending domain in Resend once the new domain is bought, then `notify.resend.from` in `config.json`
+changed to e.g. `ReelFlow <hello@newdomain.com>`. A failed confirmation email now never breaks the order page, and
+it pings the owner ("Confirmation email NOT sent - reply manually"). Owner notifications now include `email`
+(goes to `contact_email`, which the sandbox sender can reach), so new live orders reach the owner's inbox.
+
+**My orders (`/account`):** no passwords. Orders placed in a browser are remembered in a signed cookie. From any
+device, the customer enters their email and gets a 1-hour sign-in link; the page then lists every order for that
+email (`Queue.by_email`). Cookie/link signing key derives from `SUPABASE_SERVICE_KEY` (or `REELFLOW_SECRET_KEY`).
+
+**Storage limits:** uploads capped at 500 MB (`max_upload_mb`, and the Blob token in `api/blob-upload-token.js`).
+`retention_days: 7` in `config.json`. `core/retention.py` deletes the raw + final video from Blob for orders
+finished (done/failed) more than 7 days ago, keeps the order row, marks it `purged`. Runs daily at 03:00 UTC via
+Vercel Cron (`vercel.json` -> `/api/cron/cleanup`), and manually with `python reelflow.py cleanup`. Optional:
+set `CRON_SECRET` in Vercel to lock the endpoint (deleting only overdue files is harmless if anyone else calls it).
+
+**Style docs:** `skills/README.md` indexes every style the site sells; `skills/<style id>/README.md` says tier,
+editing skill, reference video and the exact steps. Generated from `styles.json` by
+`python tools/build_skill_docs.py` - re-run after changing styles. `ORDER.md` now links the style's doc.
