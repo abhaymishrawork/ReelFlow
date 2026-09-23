@@ -26,6 +26,7 @@
       <dt>Video</dt><dd>{{ o.video.original_name }}</dd>
       <dt>Placed</dt><dd>{{ o.created }}</dd>
     </dl>
+    <p class="fineprint"><a href="{{ url_for('account') }}">See all my orders</a></p>
     {% if o.status in ['new', 'editing'] %}<script>setTimeout(() => location.replace(location.pathname), 60000)</script>{% endif %}
   {% endif %}
   </div>

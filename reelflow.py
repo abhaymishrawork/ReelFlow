@@ -11,7 +11,7 @@
 import json, os, subprocess, sys, time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from core import config, jobs, notify, storage
+from core import config, jobs, notify, retention, storage
 
 CFG = config.load()
 Q, S = jobs.get(CFG), storage.get(CFG)
@@ -48,6 +48,7 @@ def prepare(oid):
         "TIER: %s" % ("Captions only (embedded-captions skill, no B-roll / motion graphics)" if tier == "captions"
                       else "Full edit (premium-motion-graphics-editor skill)"),
         "STYLE: %s (%s) - engine/style id \"%s\"" % (o["style"], style.get("name", "?"), style.get("engine_style", o["style"])),
+        "STYLE DOC: %s" % config.path(os.path.join("skills", o["style"], "README.md")),
         ref_line,
         "RAW: %s" % raw,
         "LANGUAGE: %s" % b["language"],
@@ -108,29 +109,8 @@ def deliver(oid, path):
     print("customer:", o["customer"]["email"], "(send them the link if email is off)")
 
 
-def cleanup(days=7):
-    """Deletes raw+output files (from Blob) for orders delivered more than `days` ago, to save storage.
-    Keeps the order row itself (name/email/order details) for accounting - only the video files go."""
-    if not hasattr(S, "delete"):
-        sys.exit("storage provider %r has no delete() - nothing to clean up" % CFG["storage"]["provider"])
-    cutoff = time.time() - days * 86400
-    purged = 0
-    for o in Q.list("done"):
-        if o.get("purged"):
-            continue
-        done_at = next((h[0] for h in reversed(o["history"]) if h[1] == "done"), None)
-        if not done_at or time.mktime(time.strptime(done_at, "%Y-%m-%d %H:%M:%S")) > cutoff:
-            continue
-        for key in (o["video"].get("key"), (o.get("output") or {}).get("key")):
-            if key:
-                try:
-                    S.delete(key)
-                except Exception as e:
-                    print("failed to delete", key, "-", e)
-        Q.set_status(o["id"], "done", "files purged after %d days" % days, purged=True)
-        purged += 1
-        print("purged", o["id"])
-    print("done - purged %d order(s)" % purged)
+def cleanup(days):
+    print("done - purged %d order(s)" % retention.purge_old(Q, S, days))
 
 
 def watch(every):
@@ -163,6 +143,6 @@ if __name__ == "__main__":
     elif a[0] == "watch":
         watch(int(a[1]) if len(a) > 1 else 60)
     elif a[0] == "cleanup":
-        cleanup(int(a[1]) if len(a) > 1 else 7)
+        cleanup(int(a[1]) if len(a) > 1 else CFG["retention_days"])
     else:
         print(__doc__)
