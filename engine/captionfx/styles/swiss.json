@@ -1,0 +1,53 @@
+{
+ "id": "swiss",
+ "name": "Swiss",
+ "grouping": {
+  "max_words": 3,
+  "max_chars": 22,
+  "break_gap": 0.45
+ },
+ "inline_hero": {
+  "pick": "last"
+ },
+ "support": {
+  "anchor": [
+   0.5,
+   0.62
+  ],
+  "max_per_line": 3,
+  "line_gap": -0.002,
+  "entry": {
+   "type": "fade",
+   "dur": 0.15
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "Poppins-Bold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.026,
+   "case": "lower",
+   "color": "#FFFFFF",
+   "shadow": 0.4,
+   "strip_punct": true
+  },
+  "ihero": {
+   "font": [
+    "Poppins-Bold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.046,
+   "case": "upper",
+   "color": "#FFD21F",
+   "shadow": 0.4,
+   "strip_punct": true,
+   "entry": {
+    "type": "pop",
+    "dur": 0.2,
+    "from": 1.2
+   }
+  }
+ }
+}

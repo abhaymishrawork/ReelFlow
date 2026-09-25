@@ -1,0 +1,49 @@
+{
+ "id": "liquid-glass",
+ "name": "Liquid Glass",
+ "grouping": {
+  "max_words": 3,
+  "max_chars": 22,
+  "break_gap": 0.4
+ },
+ "support": {
+  "anchor": [
+   0.5,
+   0.78
+  ],
+  "align": "left",
+  "left_x": 0.2,
+  "max_per_line": 4,
+  "entry": {
+   "type": "rise",
+   "dur": 0.2,
+   "dist": 0.25
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "Inter-VF.ttf@Regular",
+    "Inter-Regular.ttf",
+    "HelveticaNeueRoman.otf",
+    "segoeui.ttf"
+   ],
+   "size": 0.025,
+   "color": "#FFFFFF",
+   "tracking": 0.02,
+   "shadow": 0.15
+  }
+ },
+ "fx": {
+  "glass_pill": {
+   "min_width": 0.72,
+   "pad_x": 0.045,
+   "pad_y": 0.02,
+   "radius": 0.35,
+   "blur": 16,
+   "tint": "#FFFFFF",
+   "tint_alpha": 0.2,
+   "border_alpha": 0.35
+  }
+ }
+}

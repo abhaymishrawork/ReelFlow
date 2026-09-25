@@ -1,0 +1,38 @@
+{
+ "id": "dyn-linen",
+ "name": "Linen",
+ "grouping": {
+  "max_words": 5,
+  "max_chars": 24,
+  "break_gap": 0.5
+ },
+ "support": {
+  "anchor": [
+   0.5,
+   0.72
+  ],
+  "valign": "top",
+  "max_per_line": 2,
+  "line_gap": 0.004,
+  "word_gap": 0.3,
+  "entry": {
+   "type": "type",
+   "char_time": 0.045,
+   "box": "#FFFFFF70"
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "HelveticaNeueMedium.otf",
+    "Inter-VF.ttf@Medium",
+    "Inter-Medium.ttf",
+    "arial.ttf"
+   ],
+   "size": 0.032,
+   "color": "#FFFFFF",
+   "tracking": -0.035,
+   "shadow": 0.4
+  }
+ }
+}

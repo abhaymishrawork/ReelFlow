@@ -1,0 +1,61 @@
+{
+ "id": "aura",
+ "name": "Aura",
+ "grouping": {
+  "max_words": 2,
+  "max_chars": 20,
+  "break_gap": 0.35
+ },
+ "support": {
+  "anchor": [
+   0.5,
+   0.78
+  ],
+  "max_per_line": 3,
+  "entry": {
+   "type": "fade",
+   "dur": 0.2
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "PlayfairDisplay-Italic-VF.ttf@Italic",
+    "PlayfairDisplay-Italic.ttf",
+    "BOD_I.TTF",
+    "georgiai.ttf",
+    "DejaVuSerif-Italic.ttf"
+   ],
+   "size": 0.033,
+   "color": "#FFFFFF",
+   "shadow": 0.3,
+   "active_color": "#8CCBF2"
+  }
+ },
+ "hero": {
+  "pick": "score",
+  "min_score": 4,
+  "min_gap": 1.2,
+  "hold": 2.6,
+  "behind": true,
+  "anchor": [
+   0.5,
+   0.215
+  ],
+  "max_width": 0.9,
+  "entry": {
+   "type": "fade",
+   "dur": 0.25
+  },
+  "spec": {
+   "font": [
+    "HelveticaNeueBlack.otf",
+    "ArchivoBlack-Regular.ttf",
+    "ariblk.ttf"
+   ],
+   "size": 0.1,
+   "case": "upper",
+   "color": "#86C5F0"
+  }
+ }
+}

@@ -1,0 +1,64 @@
+{
+ "id": "dyn-storyline",
+ "name": "Storyline",
+ "grouping": {
+  "max_words": 4,
+  "max_chars": 26,
+  "break_gap": 0.45
+ },
+ "inline_hero": {
+  "pick": "score",
+  "min_score": 4
+ },
+ "support": {
+  "layout": "stack",
+  "anchor": [
+   0.5,
+   0.7
+  ],
+  "valign": "top",
+  "line_gap": 0.002,
+  "preview_opacity": 0.3,
+  "entry": {
+   "type": "blur",
+   "dur": 0.25
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "Inter-VF.ttf@Regular",
+    "Inter-Regular.ttf",
+    "HelveticaNeueRoman.otf",
+    "segoeui.ttf"
+   ],
+   "size": 0.023,
+   "color": "#FFFFFF",
+   "shadow": 0.4
+  },
+  "minor": {
+   "font": [
+    "PlayfairDisplay-Italic-VF.ttf@Italic",
+    "PlayfairDisplay-Italic.ttf",
+    "BOD_I.TTF",
+    "georgiai.ttf",
+    "DejaVuSerif-Italic.ttf"
+   ],
+   "size": 0.042,
+   "color": "#FBF1E3",
+   "shadow": 0.3
+  },
+  "ihero": {
+   "font": [
+    "PlayfairDisplay-Italic-VF.ttf@Bold Italic",
+    "PlayfairDisplay-BoldItalic.ttf",
+    "BOD_BI.TTF",
+    "georgiaz.ttf",
+    "DejaVuSerif-BoldItalic.ttf"
+   ],
+   "size": 0.07,
+   "color": "#FBF1E3",
+   "shadow": 0.3
+  }
+ }
+}
