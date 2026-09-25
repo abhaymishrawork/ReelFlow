@@ -1,0 +1,90 @@
+{
+ "id": "chalk",
+ "name": "Chalk",
+ "grouping": {
+  "max_words": 3,
+  "max_chars": 18,
+  "break_gap": 0.4
+ },
+ "support": {
+  "anchor": [
+   0.5,
+   0.6
+  ],
+  "max_per_line": 2,
+  "accent_rule": "content",
+  "preview_opacity": 0.3,
+  "entry": {
+   "type": "fade",
+   "dur": 0.18
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "GochiHand-Regular.ttf",
+    "PatrickHand-Regular.ttf",
+    "Inkfree.ttf",
+    "segoepr.ttf"
+   ],
+   "size": 0.036,
+   "color": "#FFFFFF",
+   "shadow": 0.35
+  },
+  "accent": {
+   "font": [
+    "GochiHand-Regular.ttf",
+    "PatrickHand-Regular.ttf",
+    "Inkfree.ttf",
+    "segoepr.ttf"
+   ],
+   "size": 0.04,
+   "color": "#F9C80E",
+   "shadow": 0.35
+  }
+ },
+ "hero": {
+  "pick": "score",
+  "min_score": 6,
+  "min_gap": 3.0,
+  "hold": 2.8,
+  "behind": true,
+  "anchor": [
+   0.5,
+   0.02
+  ],
+  "valign": "top",
+  "max_width": 0.98,
+  "repeat": 3,
+  "row_gap": 0.006,
+  "row_delay": 0.1,
+  "row_opacity": [
+   1.0,
+   0.85,
+   0.7
+  ],
+  "entry": {
+   "type": "fade",
+   "dur": 0.3
+  },
+  "spec": {
+   "font": [
+    "CabinSketch-Bold.ttf",
+    "GOTHICB.TTF",
+    "arialbd.ttf"
+   ],
+   "size": 0.075,
+   "case": "upper",
+   "color": "#F4F4F0",
+   "texture": "chalk"
+  }
+ },
+ "fx": {
+  "subject_outline": {
+   "color": "#F5C400",
+   "offset": 0.012,
+   "width": 0.006,
+   "with_hero": true
+  }
+ }
+}

@@ -1,0 +1,101 @@
+{
+ "id": "agent-story",
+ "name": "Agent Story",
+ "grouping": {
+  "max_words": 3,
+  "max_chars": 18,
+  "break_gap": 0.35
+ },
+ "support": {
+  "anchor": [
+   0.5,
+   0.42
+  ],
+  "max_per_line": 2,
+  "accent_rule": "content",
+  "entry": {
+   "type": "pop",
+   "dur": 0.2,
+   "from": 1.3
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "Poppins-SemiBold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.03,
+   "color": "#FFFFFF",
+   "shadow": 0.45
+  },
+  "minor": {
+   "font": [
+    "Poppins-Medium.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.021,
+   "color": "#FFFFFF",
+   "shadow": 0.45
+  },
+  "accent": {
+   "font": [
+    "Poppins-ExtraBold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.034,
+   "color": "#EEF25A",
+   "shadow": 0.45
+  }
+ },
+ "hero": {
+  "pick": "score",
+  "min_score": 5,
+  "min_gap": 1.6,
+  "hold": 1.8,
+  "behind": true,
+  "anchor": [
+   0.5,
+   0.075
+  ],
+  "valign": "top",
+  "max_width": 0.8,
+  "entry": {
+   "type": "pop",
+   "dur": 0.25,
+   "from": 1.15
+  },
+  "spec": {
+   "font": [
+    "Poppins-Black.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.13,
+   "case": "lower",
+   "gradient": [
+    "#2D7A1F",
+    "#3F9A2C"
+   ],
+   "angle": 90
+  },
+  "number_spec": {
+   "font": [
+    "Poppins-ExtraBold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.1,
+   "outline_only": true,
+   "stroke": 0.022,
+   "gradient": [
+    "#E4EE7A",
+    "#C8D85A"
+   ],
+   "anchor": [
+    0.5,
+    0.47
+   ],
+   "valign": "center",
+   "max_width": 0.95
+  }
+ }
+}

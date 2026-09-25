@@ -1,0 +1,72 @@
+{
+ "id": "monument",
+ "name": "Monument",
+ "grouping": {
+  "max_words": 2,
+  "max_chars": 18,
+  "break_gap": 0.4
+ },
+ "support": {
+  "anchor": [
+   0.5,
+   0.045
+  ],
+  "valign": "top",
+  "max_per_line": 3,
+  "accent_rule": "alternate",
+  "entry": {
+   "type": "fade",
+   "dur": 0.2
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "GochiHand-Regular.ttf",
+    "PatrickHand-Regular.ttf",
+    "Inkfree.ttf",
+    "segoepr.ttf"
+   ],
+   "size": 0.03,
+   "color": "#FFFFFF",
+   "shadow": 0.3
+  },
+  "accent": {
+   "font": [
+    "GochiHand-Regular.ttf",
+    "PatrickHand-Regular.ttf",
+    "Inkfree.ttf",
+    "segoepr.ttf"
+   ],
+   "size": 0.03,
+   "color": "#86F02C",
+   "shadow": 0.3
+  }
+ },
+ "hero": {
+  "pick": "score",
+  "min_score": 4,
+  "min_gap": 0.9,
+  "hold": 3.0,
+  "behind": true,
+  "anchor": [
+   0.5,
+   0.175
+  ],
+  "max_width": 0.95,
+  "entry": {
+   "type": "fade_from",
+   "dur": 0.35,
+   "from": 0.3
+  },
+  "spec": {
+   "font": [
+    "Anton-Regular.ttf",
+    "impact.ttf"
+   ],
+   "size": 0.085,
+   "case": "upper",
+   "color": "#86F02C"
+  }
+ }
+}

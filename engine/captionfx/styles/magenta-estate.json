@@ -1,0 +1,114 @@
+{
+ "id": "magenta-estate",
+ "name": "Magenta Estate",
+ "grouping": {
+  "max_words": 4,
+  "max_chars": 24,
+  "break_gap": 0.4
+ },
+ "inline_hero": {
+  "pick": "sentence_end"
+ },
+ "support": {
+  "anchor": [
+   0.5,
+   0.52
+  ],
+  "max_per_line": 3,
+  "entry": {
+   "type": "pop",
+   "dur": 0.2,
+   "from": 1.25
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "Poppins-SemiBold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.024,
+   "color": "#FFFFFF",
+   "shadow": 0.45
+  },
+  "minor": {
+   "font": [
+    "Poppins-BoldItalic.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.02,
+   "color": "#FFFFFF",
+   "shadow": 0.45
+  },
+  "ihero": {
+   "font": [
+    "Poppins-ExtraBoldItalic.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.04,
+   "color": "#FFFFFF",
+   "strip_punct": true,
+   "pill": {
+    "gradient": [
+     "#B516D6",
+     "#E040B8"
+    ],
+    "glow": "#E03CD8",
+    "radius": 0.35,
+    "pad": [
+     0.3,
+     0.12
+    ]
+   }
+  }
+ },
+ "hero": {
+  "pick": "score",
+  "min_score": 5,
+  "min_gap": 1.8,
+  "hold": 2.6,
+  "behind": true,
+  "anchor": [
+   0.5,
+   0.2
+  ],
+  "max_width": 0.82,
+  "entry": {
+   "type": "pop",
+   "dur": 0.25,
+   "from": 1.15
+  },
+  "spec": {
+   "font": [
+    "Poppins-Black.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.11,
+   "case": "lower",
+   "gradient": [
+    "#4B2BD8",
+    "#9B2BE0",
+    "#D21FCB"
+   ],
+   "angle": 35,
+   "glow": 0.25,
+   "glow_color": "#B02FE0"
+  },
+  "number_spec": {
+   "font": [
+    "Poppins-Black.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.1,
+   "gradient": [
+    "#C21FD0",
+    "#7B2FF7"
+   ],
+   "angle": 0,
+   "anchor": [
+    0.5,
+    0.12
+   ]
+  }
+ }
+}

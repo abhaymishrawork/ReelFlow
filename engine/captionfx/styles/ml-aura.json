@@ -1,0 +1,79 @@
+{
+ "id": "ml-aura",
+ "name": "Minimal Aura",
+ "grouping": {
+  "max_words": 4,
+  "max_chars": 22,
+  "break_gap": 0.45
+ },
+ "support": {
+  "layout": "lines",
+  "line_roles": [
+   "l1",
+   "l2",
+   "l3"
+  ],
+  "anchor": [
+   0.5,
+   0.78
+  ],
+  "stagger": [
+   -0.05,
+   0.0,
+   0.04
+  ],
+  "line_gap": 0.005,
+  "preview_opacity": 0.3,
+  "entry": {
+   "type": "fade",
+   "dur": 0.2
+  }
+ },
+ "roles": {
+  "base": {
+   "font": [
+    "Montserrat-ExtraBold.otf",
+    "Montserrat-ExtraBold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.028,
+   "case": "upper",
+   "color": "#FFFFFF",
+   "shadow": 0.3
+  },
+  "l1": {
+   "font": [
+    "Montserrat-ExtraBold.otf",
+    "Montserrat-ExtraBold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.027,
+   "case": "upper",
+   "color": "#7EC8F7",
+   "shadow": 0.25
+  },
+  "l2": {
+   "font": [
+    "Montserrat-ExtraBold.otf",
+    "Montserrat-ExtraBold.ttf",
+    "arialbd.ttf"
+   ],
+   "size": 0.027,
+   "case": "upper",
+   "color": "#FFFFFF",
+   "shadow": 0.3
+  },
+  "l3": {
+   "font": [
+    "PlayfairDisplay-Italic-VF.ttf@Italic",
+    "PlayfairDisplay-Italic.ttf",
+    "BOD_I.TTF",
+    "georgiai.ttf",
+    "DejaVuSerif-Italic.ttf"
+   ],
+   "size": 0.046,
+   "color": "#FFFFFF",
+   "shadow": 0.3
+  }
+ }
+}

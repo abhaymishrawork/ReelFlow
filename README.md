@@ -73,6 +73,31 @@ Say to the agent: **"process the next ReelFlow order"**. The agent must do this:
    customer a link to their order page.
 8. If the video cannot be edited: `python reelflow.py fail <order_id> "reason"`, then the owner emails the customer.
 
+## Captions Only orders run on their own (no AI chat)
+
+`tools/auto_captions.py` edits Captions Only orders with no Claude involved:
+
+1. Claims the oldest new Captions Only order and downloads it (3 tries).
+2. Transcribes to English words with timings (faster-whisper `medium`; Hindi orders stay Hindi).
+3. Cuts every pause longer than 0.45 s.
+4. Captions the cut with `engine/captionfx` in the order's style. Text keeps the style's colours and
+   gets a heavier shadow on bright backgrounds.
+5. Checks the render has video + audio at the expected length, makes a 540p preview and emails the owner.
+
+The order stays `editing` until the owner watches the preview and runs `python reelflow.py deliver ...`
+(the email has the exact command). Add `--deliver` to skip the review and deliver automatically.
+If anything fails, the owner gets a "FAILED" email and the order is left for a Claude chat.
+
+```bash
+python tools/auto_captions.py                 # oldest new Captions Only order
+python tools/auto_captions.py <order_id>      # one order
+python tools/auto_captions.py --all           # every waiting Captions Only order
+```
+
+Windows Task Scheduler task **ReelFlow auto captions** runs `tools/auto_captions.cmd` every hour
+(log: `projects/auto_captions.log`). The PC must be on. A lock file stops two runs overlapping.
+Full Edit orders still need a Claude chat: "process the next ReelFlow order".
+
 ## All commands
 
 ```bash
